@@ -963,14 +963,22 @@ window.addEventListener('load',function(){
   renderAllGDriveBars();
   renderHashtags();
   loadAll();
-  // Init Google Auth after script loads, then auto-signin if user previously connected
-  setTimeout(function(){
-    initGoogleAuth();
-    // Auto-request token silently if user previously signed in
-    if(localStorage.getItem('craftorai_gdrive_connected')==='1' && window._gisClient){
-      try{ window._gisClient.requestAccessToken({prompt:''}); }catch(e){}
+  // Wait for Google GSI script to load, then auto-reconnect
+  function tryAutoConnect(attempts){
+    if(attempts<=0)return;
+    if(typeof google!=='undefined'&&google.accounts){
+      initGoogleAuth();
+      if(localStorage.getItem('craftorai_gdrive_connected')==='1'){
+        setTimeout(function(){
+          try{ window._gisClient.requestAccessToken({prompt:''}); }
+          catch(e){ console.log('silent refresh failed',e); }
+        },300);
+      }
+    } else {
+      setTimeout(function(){tryAutoConnect(attempts-1);},500);
     }
-  },1500);
+  }
+  tryAutoConnect(10);
 });
 </script>
 </body>
