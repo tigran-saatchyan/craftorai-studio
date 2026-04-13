@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Craftorai Studio</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0f0f0f;--bg2:#1a1a1a;--bg3:#242424;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.15);--text:#f0f0f0;--text2:#a0a0a0;--text3:#606060;--accent:#FF6B35;--accent2:#FF8C5A;--teal:#1DB98A;--amber:#F0A500;--radius:10px;--radius-lg:14px}
+:root{--bg:#0f0f0f;--bg2:#1a1a1a;--bg3:#242424;--bg4:#2e2e2e;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.15);--text:#f0f0f0;--text2:#a0a0a0;--text3:#505050;--accent:#FF6B35;--accent2:#FF8C5A;--teal:#1DB98A;--amber:#F0A500;--purple:#9B8FDD;--blue:#4A90D9;--red:#E24B4A;--radius:10px;--radius-lg:14px}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;line-height:1.6;min-height:100vh}
-h1,h2,h3{font-family:'Space Grotesk',sans-serif}
 .app{display:flex;min-height:100vh}
-.sidebar{width:220px;flex-shrink:0;background:var(--bg2);border-right:0.5px solid var(--border);padding:1.5rem 1rem;display:flex;flex-direction:column;gap:4px}
-.main{flex:1;padding:2rem;overflow-x:hidden}
-.brand{display:flex;align-items:center;gap:10px;padding:0 8px;margin-bottom:2rem}
-.brand-icon{width:32px;height:32px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center}
-.brand-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--text)}
-.brand-sub{font-size:11px;color:var(--text3);margin-top:1px}
+.sidebar{width:230px;flex-shrink:0;background:var(--bg2);border-right:0.5px solid var(--border);padding:1.5rem 1rem;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.main{flex:1;padding:2rem;overflow-x:hidden;min-width:0}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px;margin-bottom:1.5rem}
+.brand-icon{width:32px;height:32px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px}
+.brand-sub{font-size:10px;color:var(--text3);margin-top:1px}
 .nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius);cursor:pointer;color:var(--text2);font-size:13px;font-weight:500;border:none;background:none;width:100%;text-align:left;transition:all 0.15s}
 .nav-item:hover{background:var(--bg3);color:var(--text)}
 .nav-item.active{background:rgba(255,107,53,0.12);color:var(--accent)}
@@ -24,640 +24,936 @@ h1,h2,h3{font-family:'Space Grotesk',sans-serif}
 .nav-item.active .nav-icon{opacity:1}
 .nav-section{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;padding:0 12px;margin:1rem 0 4px}
 .section{display:none}.section.active{display:block}
-.page-title{font-size:22px;font-weight:700;margin-bottom:4px}
-.page-sub{font-size:13px;color:var(--text2);margin-bottom:2rem}
-.metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:2rem}
+.page-title{font-size:22px;font-weight:700;font-family:'Space Grotesk',sans-serif;margin-bottom:4px}
+.page-sub{font-size:13px;color:var(--text2);margin-bottom:1.5rem}
+.metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:1.5rem}
 .metric{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem}
 .metric-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
-.metric-value{font-size:28px;font-weight:700;font-family:'Space Grotesk',sans-serif}
-.metric-value.accent{color:var(--accent)}.metric-value.teal{color:var(--teal)}.metric-value.amber{color:var(--amber)}
+.metric-value{font-size:26px;font-weight:700;font-family:'Space Grotesk',sans-serif}
+.metric-value.accent{color:var(--accent)}.metric-value.teal{color:var(--teal)}.metric-value.amber{color:var(--amber)}.metric-value.purple{color:var(--purple)}
 .card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:16px}
 .card-title{font-size:14px;font-weight:600;margin-bottom:1rem;color:var(--text)}
 .badge{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap}
 .badge-timelapse{background:rgba(29,185,138,0.15);color:#1DB98A}
 .badge-before-after{background:rgba(240,165,0,0.15);color:#F0A500}
-.badge-carousel{background:rgba(124,111,205,0.15);color:#9B8FDD}
+.badge-carousel{background:rgba(155,143,221,0.15);color:#9B8FDD}
 .badge-static{background:rgba(74,144,217,0.15);color:#4A90D9}
-.badge-stories{background:rgba(255,107,53,0.15);color:var(--accent2)}
+.badge-stories{background:rgba(255,107,53,0.15);color:#FF8C5A}
 .badge-idea{background:rgba(255,255,255,0.06);color:var(--text2)}
 .badge-filming{background:rgba(240,165,0,0.15);color:#F0A500}
-.badge-editing{background:rgba(124,111,205,0.15);color:#9B8FDD}
+.badge-editing{background:rgba(155,143,221,0.15);color:#9B8FDD}
 .badge-published{background:rgba(29,185,138,0.15);color:#1DB98A}
-.content-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--border)}
+.badge-queued{background:rgba(74,144,217,0.15);color:#4A90D9}
+.badge-printing{background:rgba(240,165,0,0.15);color:#F0A500}
+.badge-done{background:rgba(29,185,138,0.15);color:#1DB98A}
+.badge-regular{background:rgba(255,255,255,0.06);color:var(--text2)}
+.badge-partner{background:rgba(155,143,221,0.15);color:#9B8FDD}
+.content-row{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:0.5px solid var(--border)}
 .content-row:last-child{border-bottom:none}
-.content-title{flex:1;font-size:13px;color:var(--text);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.content-title{flex:1;font-size:13px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .content-meta{font-size:11px;color:var(--text3);white-space:nowrap}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;font-size:13px;font-weight:500;border-radius:var(--radius);cursor:pointer;border:0.5px solid var(--border2);background:none;color:var(--text);font-family:'Inter',sans-serif;transition:all 0.15s}
-.btn:hover{background:var(--bg3)}
+.btn:hover{background:var(--bg3)}.btn:disabled{opacity:0.45;cursor:not-allowed}
 .btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
 .btn-primary:hover{background:var(--accent2);border-color:var(--accent2)}
+.btn-teal{background:var(--teal);border-color:var(--teal);color:#fff}
+.btn-teal:hover{opacity:0.85}
 .btn-sm{padding:4px 10px;font-size:12px}
-.form-row{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.btn-icon{padding:6px;border-radius:6px;border-color:var(--border)}
+.form-row{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
 .form-label{font-size:12px;color:var(--text2);font-weight:500}
+.form-hint{font-size:11px;color:var(--text3);margin-top:3px}
 input,select,textarea{width:100%;padding:9px 12px;font-size:13px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg3);color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color 0.15s}
 input:focus,select:focus,textarea:focus{border-color:var(--accent)}
 select option{background:var(--bg3)}
-textarea{resize:vertical;min-height:72px}
+textarea{resize:vertical;min-height:64px}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.four-col{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px}
 .gen-type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
 .gen-type-btn{padding:10px 8px;font-size:12px;font-weight:500;border:0.5px solid var(--border);border-radius:var(--radius);background:var(--bg3);cursor:pointer;color:var(--text2);text-align:center;font-family:'Inter',sans-serif;transition:all 0.15s}
 .gen-type-btn:hover{border-color:var(--border2);color:var(--text)}
 .gen-type-btn.selected{border-color:var(--accent);background:rgba(255,107,53,0.12);color:var(--accent)}
-.gen-output{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--radius);padding:1rem;font-size:13px;line-height:1.8;color:var(--text);min-height:80px;white-space:pre-wrap}
+.gen-output{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--radius);padding:1rem;font-size:13px;line-height:1.8;min-height:80px;white-space:pre-wrap}
 .print-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:0.5px solid var(--border)}
 .print-row:last-child{border-bottom:none}
 .print-icon{width:40px;height:40px;border-radius:var(--radius);background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
 .print-info{flex:1;min-width:0}
-.print-name{font-size:14px;font-weight:500;color:var(--text)}
+.print-name{font-size:14px;font-weight:500}
 .print-sub{font-size:12px;color:var(--text2);margin-top:3px}
 .print-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
-.tag-section-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px}
+.media-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.media-slot{border:0.5px dashed var(--border2);border-radius:var(--radius);padding:10px;text-align:center;cursor:pointer;transition:all 0.15s;min-height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.media-slot:hover{border-color:var(--accent);background:rgba(255,107,53,0.05)}
+.media-slot.filled{border-style:solid;border-color:var(--teal);background:rgba(29,185,138,0.05)}
+.media-slot-label{font-size:11px;color:var(--text3)}
+.media-slot.filled .media-slot-label{color:var(--teal)}
 .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.5rem}
 .tag{font-size:12px;padding:4px 10px;border-radius:20px;background:var(--bg3);color:var(--text2);border:0.5px solid var(--border);cursor:pointer;transition:all 0.15s}
-.tag:hover{border-color:var(--accent);color:var(--accent)}
+.tag:hover,.tag.selected{border-color:var(--accent);color:var(--accent)}
 .progress-bar{height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-top:6px}
 .progress-fill{height:100%;border-radius:2px;background:var(--accent);transition:width 0.4s}
 .progress-row{margin-bottom:14px}
 .progress-header{display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:4px}
-.del-btn{background:none;border:none;cursor:pointer;color:var(--text3);padding:4px;border-radius:4px;font-size:16px;line-height:1;transition:color 0.15s}
-.del-btn:hover{color:#E24B4A}
-.toast{position:fixed;bottom:2rem;right:2rem;background:var(--bg3);border:0.5px solid var(--border2);border-radius:var(--radius);padding:12px 20px;font-size:13px;font-weight:500;color:var(--text);opacity:0;transform:translateY(8px);transition:all 0.2s;pointer-events:none;z-index:999}
+.del-btn{background:none;border:none;cursor:pointer;color:var(--text3);padding:4px 6px;border-radius:4px;font-size:16px;line-height:1;transition:color 0.15s;flex-shrink:0}
+.del-btn:hover{color:var(--red)}
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--bg3);border:0.5px solid var(--border2);border-radius:var(--radius);padding:12px 20px;font-size:13px;font-weight:500;opacity:0;transform:translateY(8px);transition:all 0.2s;pointer-events:none;z-index:999}
 .toast.show{opacity:1;transform:translateY(0)}
-.toast.error{border-color:rgba(226,75,74,0.5);color:#F09595}
 .empty{text-align:center;padding:2.5rem 1rem;color:var(--text3);font-size:13px}
-.sync-bar{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text3);padding:0 8px;margin-top:auto;padding-top:1rem}
-.sync-dot{width:7px;height:7px;border-radius:50%;background:var(--text3);flex-shrink:0}
-.sync-dot.ok{background:var(--teal)}
-.sync-dot.err{background:#E24B4A}
-.sync-dot.syncing{background:var(--amber);animation:pulse 1s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-@media(max-width:768px){.app{flex-direction:column}.sidebar{width:100%;border-right:none;border-bottom:0.5px solid var(--border);padding:1rem;flex-direction:row;flex-wrap:wrap;gap:6px}.brand{width:100%;margin-bottom:0.5rem}.nav-section{display:none}.main{padding:1rem}.metric-grid{grid-template-columns:repeat(2,1fr)}.two-col,.three-col{grid-template-columns:1fr}.gen-type-grid{grid-template-columns:repeat(2,1fr)}}
+.sync-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(29,185,138,0.1);color:var(--teal);border:0.5px solid rgba(29,185,138,0.2)}
+.sync-badge.syncing{background:rgba(240,165,0,0.1);color:var(--amber);border-color:rgba(240,165,0,0.2)}
+.sync-badge.error{background:rgba(226,75,74,0.1);color:var(--red);border-color:rgba(226,75,74,0.2)}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+/* Calc styles */
+.calc-box{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;margin-top:1rem}
+.calc-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:0.5px solid var(--border);font-size:13px}
+.calc-row:last-child{border-bottom:none}
+.calc-label{color:var(--text2)}
+.calc-value{font-weight:500;font-family:'Space Grotesk',sans-serif}
+.calc-total{font-size:15px;font-weight:700;color:var(--accent);font-family:'Space Grotesk',sans-serif}
+.calc-price{font-size:15px;font-weight:700;color:var(--teal);font-family:'Space Grotesk',sans-serif}
+.calc-profit{font-size:15px;font-weight:700;color:var(--amber);font-family:'Space Grotesk',sans-serif}
+.calc-section{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;padding:8px 0 4px;margin-top:4px}
+/* Settings */
+.settings-section{margin-bottom:2rem}
+.settings-title{font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:1rem;padding-bottom:8px;border-bottom:0.5px solid var(--border)}
+.profile-tabs{display:flex;gap:4px;margin-bottom:1rem}
+.profile-tab{padding:6px 14px;font-size:12px;font-weight:500;border-radius:20px;border:0.5px solid var(--border2);background:none;color:var(--text2);cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s}
+.profile-tab.active{background:rgba(155,143,221,0.15);border-color:var(--purple);color:var(--purple)}
+/* Google auth */
+.gdrive-bar{display:flex;align-items:center;gap:10px;background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--radius);padding:10px 14px;margin-bottom:16px}
+.gdrive-avatar{width:28px;height:28px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--text2);overflow:hidden;flex-shrink:0}
+.gdrive-avatar img{width:100%;height:100%;object-fit:cover}
+.gdrive-info{flex:1;min-width:0}
+.gdrive-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gdrive-sub{font-size:11px;color:var(--text3)}
+/* Queue */
+.queue-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:12px}
+.queue-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+.queue-name{font-size:14px;font-weight:600}
+.queue-meta{font-size:12px;color:var(--text2);margin-top:2px}
+.queue-prices{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.price-box{background:var(--bg3);border-radius:var(--radius);padding:10px;text-align:center}
+.price-box-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px}
+.price-box-value{font-size:16px;font-weight:700;font-family:'Space Grotesk',sans-serif}
+.price-box-value.cost{color:var(--red)}
+.price-box-value.sale{color:var(--teal)}
+.price-box-value.profit{color:var(--amber)}
+/* File upload zone */
+.file-zone{border:0.5px dashed var(--border2);border-radius:var(--radius);padding:12px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all 0.15s}
+.file-zone:hover{border-color:var(--accent);background:rgba(255,107,53,0.03)}
+.file-zone.uploading{border-color:var(--amber);background:rgba(240,165,0,0.03)}
+.file-zone.done{border-color:var(--teal);background:rgba(29,185,138,0.03)}
+.file-zone-icon{width:32px;height:32px;border-radius:var(--radius);background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.file-zone-text{flex:1;min-width:0}
+.file-zone-title{font-size:13px;font-weight:500}
+.file-zone-sub{font-size:11px;color:var(--text3);margin-top:2px}
+input[type=file]{display:none}
+@media(max-width:900px){.app{flex-direction:column}.sidebar{width:100%;height:auto;position:relative;padding:1rem;flex-direction:row;flex-wrap:wrap;gap:4px;border-right:none;border-bottom:0.5px solid var(--border)}.brand{width:100%;margin-bottom:0.5rem}.nav-section{display:none}.main{padding:1rem}.metric-grid{grid-template-columns:repeat(2,1fr)}.two-col,.three-col,.four-col{grid-template-columns:1fr}.gen-type-grid{grid-template-columns:repeat(2,1fr)}.media-grid{grid-template-columns:repeat(2,1fr)}.queue-prices{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="app">
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="brand-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="white" stroke-width="2"><rect x="3" y="8" width="14" height="9" rx="1.5"/><path d="M7 8V6a3 3 0 016 0v2"/></svg></div>
-      <div><div class="brand-name">Craftorai</div><div class="brand-sub">Studio</div></div>
-    </div>
-    <button class="nav-item active" onclick="showTab('dashboard')">
-      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zm6-4a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zm6-3a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>Дашборд
-    </button>
-    <div class="nav-section">Контент</div>
-    <button class="nav-item" onclick="showTab('planner')">
-      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>Планировщик
-    </button>
-    <button class="nav-item" onclick="showTab('generate')">
-      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>Генератор
-    </button>
-    <button class="nav-item" onclick="showTab('hashtags')">
-      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.243 3.03a1 1 0 01.727 1.213L9.53 6h2.94l.56-2.243a1 1 0 111.94.486L14.53 6H17a1 1 0 110 2h-2.97l-1 4H15a1 1 0 110 2h-2.47l-.56 2.242a1 1 0 11-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 11-1.94-.485L5.47 14H3a1 1 0 110-2h2.97l1-4H5a1 1 0 110-2h2.47l.56-2.243a1 1 0 011.213-.727zM9.03 8l-1 4h2.938l1-4H9.031z" clip-rule="evenodd"/></svg>Хэштеги
-    </button>
-    <div class="nav-section">Производство</div>
-    <button class="nav-item" onclick="showTab('prints')">
-      <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 6a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2zm0 6a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2z"/></svg>Журнал печати
-    </button>
-    <div class="sync-bar">
-      <div class="sync-dot" id="sync-dot"></div>
-      <span id="sync-label">Подключение...</span>
-    </div>
-  </aside>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="white" stroke-width="2"><rect x="3" y="8" width="14" height="9" rx="1.5"/><path d="M7 8V6a3 3 0 0 1 6 0v2"/></svg></div>
+    <div><div class="brand-name">Craftorai</div><div class="brand-sub">Studio v3</div></div>
+  </div>
+  <button class="nav-item active" onclick="showTab('dashboard')"><svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zm6-4a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zm6-3a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>Дашборд</button>
+  <div class="nav-section">Контент</div>
+  <button class="nav-item" onclick="showTab('planner')"><svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>Планировщик</button>
+  <button class="nav-item" onclick="showTab('generate')"><svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>Генератор</button>
+  <button class="nav-item" onclick="showTab('hashtags')"><svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.243 3.03a1 1 0 01.727 1.213L9.53 6h2.94l.56-2.243a1 1 0 111.94.486L14.53 6H17a1 1 0 110 2h-2.97l-1 4H15a1 1 0 110 2h-2.47l-.56 2.242a1 1 0 11-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 11-1.94-.485L5.47 14H3a1 1 0 110-2h2.97l1-4H5a1 1 0 110-2h2.47l.56-2.243a1 1 0 011.213-.727zM9.03 8l-1 4h2.938l1-4H9.031z" clip-rule="evenodd"/></svg>Хэштеги</button>
+  <div class="nav-section">Производство</div>
+  <button class="nav-item" onclick="showTab('queue')"><svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>План печати</button>
+  <button class="nav-item" onclick="showTab('prints')"><svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 6a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2zm0 6a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2z"/></svg>Журнал печати</button>
+  <div class="nav-section">Система</div>
+  <button class="nav-item" onclick="showTab('settings')"><svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>Настройки</button>
+</aside>
 
-  <main class="main">
-    <!-- Dashboard -->
-    <div id="tab-dashboard" class="section active">
-      <div class="page-title">Дашборд</div>
-      <div class="page-sub">@craftorai.ge — обзор активности</div>
-      <div class="metric-grid">
-        <div class="metric"><div class="metric-label">Опубликовано</div><div class="metric-value accent" id="m-published">—</div></div>
-        <div class="metric"><div class="metric-label">В работе</div><div class="metric-value" id="m-inwork">—</div></div>
-        <div class="metric"><div class="metric-label">Фигурок</div><div class="metric-value teal" id="m-prints">—</div></div>
-        <div class="metric"><div class="metric-label">Граммов</div><div class="metric-value amber" id="m-grams">—</div></div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-        <div class="card"><div class="card-title">Последние посты</div><div id="dash-posts"><div class="empty">Загрузка...</div></div></div>
-        <div class="card"><div class="card-title">Прогресс по форматам</div><div id="dash-formats"></div></div>
-      </div>
-      <div class="card"><div class="card-title">Последние изделия</div><div id="dash-prints"><div class="empty">Загрузка...</div></div></div>
-    </div>
+<main class="main">
 
-    <!-- Planner -->
-    <div id="tab-planner" class="section">
-      <div class="page-title">Планировщик</div>
-      <div class="page-sub">От идеи до публикации</div>
-      <div class="card">
-        <div class="card-title">Добавить пост</div>
-        <div class="two-col">
-          <div class="form-row"><label class="form-label">Формат</label>
-            <select id="plan-type">
-              <option value="timelapse">Рилс — таймлапс печати</option>
-              <option value="before-after">Рилс — до/после + постобработка</option>
-              <option value="carousel">Карусель — процесс + детали</option>
-              <option value="static">Статичный пост — фото изделия</option>
-              <option value="stories">Сторис</option>
-            </select>
-          </div>
-          <div class="form-row"><label class="form-label">Дата публикации</label><input type="date" id="plan-date"></div>
-        </div>
-        <div class="form-row"><label class="form-label">Название / идея</label><input type="text" id="plan-title" placeholder="Например: таймлапс Демогоргона..."></div>
-        <div class="two-col">
-          <div class="form-row"><label class="form-label">Статус</label>
-            <select id="plan-status">
-              <option value="idea">Идея</option>
-              <option value="filming">Съёмка</option>
-              <option value="editing">Монтаж</option>
-              <option value="published">Опубликовано</option>
-            </select>
-          </div>
-          <div class="form-row"><label class="form-label">Язык</label>
-            <select id="plan-lang"><option value="ru">Русский</option><option value="ka">Грузинский</option><option value="both">Оба</option></select>
-          </div>
-        </div>
-        <div class="form-row"><label class="form-label">Заметки</label><textarea id="plan-notes" placeholder="Детали, что снять..."></textarea></div>
-        <button class="btn btn-primary" onclick="addPost()">Добавить в план</button>
-      </div>
-      <div class="card">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-          <div class="card-title" style="margin-bottom:0">Контент-план</div>
-          <div style="display:flex;gap:6px">
-            <select id="filter-status" onchange="renderPlan()" style="width:auto;padding:5px 10px;font-size:12px">
-              <option value="">Все статусы</option>
-              <option value="idea">Идея</option><option value="filming">Съёмка</option>
-              <option value="editing">Монтаж</option><option value="published">Опубликовано</option>
-            </select>
-            <select id="filter-type" onchange="renderPlan()" style="width:auto;padding:5px 10px;font-size:12px">
-              <option value="">Все форматы</option>
-              <option value="timelapse">Таймлапс</option><option value="before-after">До/после</option>
-              <option value="carousel">Карусель</option><option value="static">Статичный</option><option value="stories">Сторис</option>
-            </select>
-          </div>
-        </div>
-        <div id="plan-list"><div class="empty">Загрузка...</div></div>
-      </div>
-    </div>
+<!-- DASHBOARD -->
+<div id="tab-dashboard" class="section active">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+    <div class="page-title">Дашборд</div>
+    <div class="sync-badge syncing" id="sync-status"><div class="sync-dot"></div><span>Загрузка...</span></div>
+  </div>
+  <div class="page-sub">@craftorai.ge — полный обзор</div>
+  <div class="metric-grid">
+    <div class="metric"><div class="metric-label">Опубликовано</div><div class="metric-value accent" id="m-published">—</div></div>
+    <div class="metric"><div class="metric-label">В очереди</div><div class="metric-value purple" id="m-queue">—</div></div>
+    <div class="metric"><div class="metric-label">Напечатано</div><div class="metric-value teal" id="m-prints">—</div></div>
+    <div class="metric"><div class="metric-label">Граммов</div><div class="metric-value amber" id="m-grams">—</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card"><div class="card-title">Последние посты</div><div id="dash-posts"><div class="empty">Загрузка...</div></div></div>
+    <div class="card"><div class="card-title">Прогресс по форматам</div><div id="dash-formats"></div></div>
+  </div>
+  <div class="card"><div class="card-title">Последние изделия</div><div id="dash-prints"><div class="empty">Загрузка...</div></div></div>
+</div>
 
-    <!-- Generator -->
-    <div id="tab-generate" class="section">
-      <div class="page-title">Генератор контента</div>
-      <div class="page-sub">AI создаёт тексты и сценарии для постов Craftorai</div>
-      <div class="card">
-        <div class="card-title">Параметры</div>
-        <div class="form-row"><label class="form-label">Формат</label>
-          <div class="gen-type-grid" id="gen-types">
-            <button class="gen-type-btn selected" data-val="timelapse" onclick="selectGenType(this)">Рилс-таймлапс</button>
-            <button class="gen-type-btn" data-val="before-after" onclick="selectGenType(this)">До / после</button>
-            <button class="gen-type-btn" data-val="carousel" onclick="selectGenType(this)">Карусель</button>
-            <button class="gen-type-btn" data-val="static" onclick="selectGenType(this)">Статичный</button>
-            <button class="gen-type-btn" data-val="stories" onclick="selectGenType(this)">Сторис</button>
-            <button class="gen-type-btn" data-val="hook" onclick="selectGenType(this)">Хуки (5 шт)</button>
-          </div>
-        </div>
-        <div class="two-col">
-          <div class="form-row"><label class="form-label">Изделие / тема</label><input type="text" id="gen-subject" placeholder="Демогоргон, 15ч, PLA белый"></div>
-          <div class="form-row"><label class="form-label">Язык</label>
-            <select id="gen-lang"><option value="ru">Русский</option><option value="ka">Грузинский</option><option value="both">Русский + Грузинский</option></select>
-          </div>
-        </div>
-        <div class="form-row"><label class="form-label">Доп. контекст</label><textarea id="gen-context" placeholder="Особенности, постобработка..." style="min-height:56px"></textarea></div>
-        <button class="btn btn-primary" onclick="generateContent()" id="gen-btn">Сгенерировать</button>
+<!-- PLANNER -->
+<div id="tab-planner" class="section">
+  <div class="page-title">Планировщик</div>
+  <div class="page-sub">Управляй контентом от идеи до публикации</div>
+  <div class="card">
+    <div class="card-title">Добавить пост</div>
+    <div class="two-col">
+      <div class="form-row"><label class="form-label">Формат</label>
+        <select id="plan-type"><option value="timelapse">Рилс — таймлапс</option><option value="before-after">Рилс — до/после</option><option value="carousel">Карусель</option><option value="static">Статичный пост</option><option value="stories">Сторис</option></select>
       </div>
-      <div class="card" id="gen-result-card" style="display:none">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-          <div class="card-title" style="margin-bottom:0">Готовый текст</div>
-          <div style="display:flex;gap:6px">
-            <button class="btn btn-sm" onclick="copyGen()">Скопировать</button>
-            <button class="btn btn-sm btn-primary" onclick="saveToPlanner()">В план</button>
-          </div>
-        </div>
-        <div class="gen-output" id="gen-output"></div>
+      <div class="form-row"><label class="form-label">Дата</label><input type="date" id="plan-date"></div>
+    </div>
+    <div class="form-row"><label class="form-label">Название / идея</label><input type="text" id="plan-title" placeholder="Таймлапс Демогоргона..."></div>
+    <div class="two-col">
+      <div class="form-row"><label class="form-label">Статус</label>
+        <select id="plan-status"><option value="idea">Идея</option><option value="filming">Съёмка</option><option value="editing">Монтаж</option><option value="published">Опубликовано</option></select>
+      </div>
+      <div class="form-row"><label class="form-label">Язык</label>
+        <select id="plan-lang"><option value="ru">Русский</option><option value="ka">Грузинский</option><option value="both">Оба</option></select>
       </div>
     </div>
+    <div class="form-row"><label class="form-label">Заметки</label><textarea id="plan-notes" placeholder="Детали..."></textarea></div>
+    <button class="btn btn-primary" onclick="addPost()" id="btn-add-post">Добавить в план</button>
+  </div>
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+      <div class="card-title" style="margin-bottom:0">Контент-план</div>
+      <div style="display:flex;gap:6px">
+        <select id="filter-status" onchange="renderPlan()" style="width:auto;padding:5px 10px;font-size:12px"><option value="">Все статусы</option><option value="idea">Идея</option><option value="filming">Съёмка</option><option value="editing">Монтаж</option><option value="published">Опубликовано</option></select>
+        <select id="filter-type" onchange="renderPlan()" style="width:auto;padding:5px 10px;font-size:12px"><option value="">Все форматы</option><option value="timelapse">Таймлапс</option><option value="before-after">До/после</option><option value="carousel">Карусель</option><option value="static">Статичный</option><option value="stories">Сторис</option></select>
+      </div>
+    </div>
+    <div id="plan-list"><div class="empty">Загрузка...</div></div>
+  </div>
+</div>
 
-    <!-- Hashtags -->
-    <div id="tab-hashtags" class="section">
-      <div class="page-title">Хэштеги</div>
-      <div class="page-sub">Готовые наборы и AI-генератор под пост</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-        <div class="card">
-          <div class="card-title">Базовые хэштеги Craftorai</div>
-          <div class="tag-section-title">Международные</div><div class="tag-row" id="tags-en"></div>
-          <div class="tag-section-title">Русскоязычные</div><div class="tag-row" id="tags-ru"></div>
-          <div class="tag-section-title">Грузинские</div><div class="tag-row" id="tags-ka"></div>
-          <div class="tag-section-title">Бренд</div><div class="tag-row" id="tags-brand"></div>
-          <button class="btn btn-sm" onclick="copyAllTags()">Скопировать все</button>
-        </div>
-        <div class="card">
-          <div class="card-title">Генератор под пост</div>
-          <div class="form-row"><label class="form-label">Опиши пост</label><textarea id="tag-subject" placeholder="Таймлапс Демогоргона, фигурка, PLA..." style="min-height:56px"></textarea></div>
-          <button class="btn btn-primary" onclick="generateTags()" id="tag-btn">Подобрать хэштеги</button>
-          <div id="custom-tags-out" style="margin-top:1rem"></div>
-        </div>
+<!-- GENERATOR -->
+<div id="tab-generate" class="section">
+  <div class="page-title">Генератор контента</div>
+  <div class="page-sub">AI создаёт тексты для постов Craftorai</div>
+  <div class="card">
+    <div class="card-title">Параметры</div>
+    <div class="form-row"><label class="form-label">Формат</label>
+      <div class="gen-type-grid">
+        <button class="gen-type-btn selected" data-val="timelapse" onclick="selectGenType(this)">Рилс-таймлапс</button>
+        <button class="gen-type-btn" data-val="before-after" onclick="selectGenType(this)">До / после</button>
+        <button class="gen-type-btn" data-val="carousel" onclick="selectGenType(this)">Карусель</button>
+        <button class="gen-type-btn" data-val="static" onclick="selectGenType(this)">Статичный</button>
+        <button class="gen-type-btn" data-val="stories" onclick="selectGenType(this)">Сторис</button>
+        <button class="gen-type-btn" data-val="hook" onclick="selectGenType(this)">5 хуков</button>
       </div>
     </div>
+    <div class="two-col">
+      <div class="form-row"><label class="form-label">Тема / изделие</label><input type="text" id="gen-subject" placeholder="Демогоргон, 15ч, PLA белый"></div>
+      <div class="form-row"><label class="form-label">Язык</label><select id="gen-lang"><option value="ru">Русский</option><option value="ka">Грузинский</option><option value="both">Рус + Грузинский</option></select></div>
+    </div>
+    <div class="form-row"><label class="form-label">Доп. контекст</label><textarea id="gen-context" placeholder="Постобработка, нестандартный цвет..." style="min-height:52px"></textarea></div>
+    <button class="btn btn-primary" onclick="generateContent()" id="gen-btn">Сгенерировать</button>
+  </div>
+  <div class="card" id="gen-result-card" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+      <div class="card-title" style="margin-bottom:0">Готовый текст</div>
+      <div style="display:flex;gap:6px"><button class="btn btn-sm" onclick="copyGen()">Скопировать</button><button class="btn btn-sm btn-primary" onclick="saveToPlanner()">В план</button></div>
+    </div>
+    <div class="gen-output" id="gen-output"></div>
+  </div>
+</div>
 
-    <!-- Prints -->
-    <div id="tab-prints" class="section">
-      <div class="page-title">Журнал печати</div>
-      <div class="page-sub">Трекер каждого изделия — граммы, время, постобработка</div>
-      <div class="card">
-        <div class="card-title">Добавить изделие</div>
-        <div class="two-col">
-          <div class="form-row"><label class="form-label">Название</label><input type="text" id="print-name" placeholder="Демогоргон из стены"></div>
-          <div class="form-row"><label class="form-label">Дата печати</label><input type="date" id="print-date"></div>
-        </div>
-        <div class="three-col">
-          <div class="form-row"><label class="form-label">Вес (граммы)</label><input type="number" id="print-grams" placeholder="45"></div>
-          <div class="form-row"><label class="form-label">Время печати</label><input type="text" id="print-time" placeholder="15ч 30м"></div>
-          <div class="form-row"><label class="form-label">Стоимость PLA (₾)</label><input type="number" id="print-cost" placeholder="3.50" step="0.01"></div>
-        </div>
-        <div class="two-col">
-          <div class="form-row"><label class="form-label">Филамент</label>
-            <select id="print-filament">
-              <option>Bambu PLA Basic — белый</option><option>Bambu PLA Basic — чёрный</option>
-              <option>Bambu PLA Basic — серый</option><option>Bambu PLA Basic — красный</option>
-              <option>Bambu PLA Basic — синий</option><option>Bambu PLA Matte</option><option>Другой</option>
-            </select>
-          </div>
-          <div class="form-row"><label class="form-label">Категория</label>
-            <select id="print-cat">
-              <option value="figure">Фигурка / фэндом</option><option value="decor">Декор / интерьер</option>
-              <option value="practical">Практичный предмет</option><option value="test">Тест / калибровка</option>
-              <option value="custom">Кастомный заказ</option>
-            </select>
-          </div>
-        </div>
-        <div class="two-col">
-          <div class="form-row"><label class="form-label">Постобработка</label>
-            <select id="print-post">
-              <option value="none">Нет</option><option value="sand">Шлифовка</option>
-              <option value="paint">Покраска</option><option value="full">Полная (грунт + покраска + лак)</option>
-              <option value="airbrush">Аэрограф</option>
-            </select>
-          </div>
-          <div class="form-row"><label class="form-label">Качество результата</label>
-            <select id="print-quality">
-              <option value="5">Отлично</option><option value="4">Хорошо</option>
-              <option value="3">Нормально</option><option value="2">Слабо</option><option value="1">Брак</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-row"><label class="form-label">Заметки</label><textarea id="print-notes" placeholder="Что получилось, что нет..."></textarea></div>
-        <button class="btn btn-primary" onclick="addPrint()">Добавить изделие</button>
-      </div>
-      <div class="card">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-          <div class="card-title" style="margin-bottom:0">Все изделия</div>
-          <div style="font-size:12px;color:var(--text3)" id="print-total-stat"></div>
-        </div>
-        <div id="print-list"><div class="empty">Загрузка...</div></div>
+<!-- HASHTAGS -->
+<div id="tab-hashtags" class="section">
+  <div class="page-title">Хэштеги</div>
+  <div class="page-sub">Готовые наборы и AI-генератор</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card">
+      <div class="card-title">Базовые хэштеги</div>
+      <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Международные</div><div class="tag-row" id="tags-en"></div>
+      <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Русскоязычные</div><div class="tag-row" id="tags-ru"></div>
+      <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Грузинские</div><div class="tag-row" id="tags-ka"></div>
+      <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Бренд</div><div class="tag-row" id="tags-brand"></div>
+      <button class="btn btn-sm" onclick="copyAllTags()">Скопировать все</button>
+    </div>
+    <div class="card">
+      <div class="card-title">Генератор под пост</div>
+      <div class="form-row"><label class="form-label">Опиши пост</label><textarea id="tag-subject" placeholder="Таймлапс, 3D фигурка, PLA..." style="min-height:52px"></textarea></div>
+      <button class="btn btn-primary" onclick="generateTags()" id="tag-btn">Подобрать хэштеги</button>
+      <div id="custom-tags-out" style="margin-top:1rem"></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUEUE -->
+<div id="tab-queue" class="section">
+  <div class="page-title">План печати</div>
+  <div class="page-sub">Планируй, считай стоимость, конвертируй в журнал</div>
+  <div id="gdrive-bar-queue"></div>
+  <div class="card">
+    <div class="card-title">Добавить в очередь</div>
+    <div class="two-col">
+      <div class="form-row"><label class="form-label">Название модели</label><input type="text" id="q-name" placeholder="Демогоргон из стены"></div>
+      <div class="form-row"><label class="form-label">Тип клиента</label>
+        <select id="q-client"><option value="regular">Обычный клиент</option><option value="partner">Партнёр</option></select>
       </div>
     </div>
-  </main>
+    <div class="three-col">
+      <div class="form-row"><label class="form-label">Вес (г)</label><input type="number" id="q-grams" placeholder="80" oninput="liveCalc()"></div>
+      <div class="form-row"><label class="form-label">Время печати (ч)</label><input type="number" id="q-hours" placeholder="6.9" step="0.1" oninput="liveCalc()"></div>
+      <div class="form-row"><label class="form-label">Материалы постобр. (₾)</label><input type="number" id="q-postmat" placeholder="0" step="0.5" oninput="liveCalc()"></div>
+    </div>
+    <div class="three-col">
+      <div class="form-row"><label class="form-label">Время подготовки (ч)</label><input type="number" id="q-prep" value="0.2" step="0.1" oninput="liveCalc()"></div>
+      <div class="form-row"><label class="form-label">Время постобр. (ч)</label><input type="number" id="q-posttime" value="0.1" step="0.1" oninput="liveCalc()"></div>
+      <div class="form-row"><label class="form-label">Упаковка (₾)</label><input type="number" id="q-pack" value="0" step="0.5" oninput="liveCalc()"></div>
+    </div>
+    <!-- STL upload -->
+    <div class="form-row">
+      <label class="form-label">STL файл (Google Drive)</label>
+      <div class="file-zone" id="fz-stl" onclick="triggerFile('stl-input')">
+        <div class="file-zone-icon"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="var(--text3)" stroke-width="1.5"><path d="M9 13V7m0 0L7 9m2-2l2 2"/><path d="M3 13.5A3.5 3.5 0 016.5 10h.5a4 4 0 014-4 4 4 0 014 4h.5a2.5 2.5 0 010 5H6.5A3.5 3.5 0 013 13.5z" stroke-linecap="round"/></svg></div>
+        <div class="file-zone-text"><div class="file-zone-title" id="fz-stl-title">Загрузить STL на Drive</div><div class="file-zone-sub">Авторизуйтесь через Google для загрузки</div></div>
+      </div>
+      <input type="file" id="stl-input" accept=".stl,.STL" onchange="uploadFile('stl-input','fz-stl','stl')">
+    </div>
+    <div class="form-row"><label class="form-label">Заметки</label><textarea id="q-notes" placeholder="Детали модели, клиент, источник файла..."></textarea></div>
+    <!-- Live calc preview -->
+    <div class="calc-box" id="live-calc-box">
+      <div style="font-size:12px;color:var(--text3);text-align:center;padding:0.5rem">Введи вес и время печати для расчёта</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="btn btn-primary" onclick="addToQueue()" id="btn-add-queue">Добавить в очередь</button>
+    </div>
+  </div>
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+      <div class="card-title" style="margin-bottom:0">Очередь печати</div>
+      <select id="q-filter" onchange="renderQueue()" style="width:auto;padding:5px 10px;font-size:12px"><option value="">Все</option><option value="queued">В очереди</option><option value="printing">Печатается</option><option value="done">Готово</option></select>
+    </div>
+    <div id="queue-list"><div class="empty">Загрузка...</div></div>
+  </div>
+</div>
+
+<!-- PRINTS -->
+<div id="tab-prints" class="section">
+  <div class="page-title">Журнал печати</div>
+  <div class="page-sub">Трекер изделий с фото, видео и расчётом стоимости</div>
+  <div id="gdrive-bar-prints"></div>
+  <div class="card">
+    <div class="card-title">Добавить изделие</div>
+    <div class="two-col">
+      <div class="form-row"><label class="form-label">Название</label><input type="text" id="print-name" placeholder="Демогоргон из стены"></div>
+      <div class="form-row"><label class="form-label">Дата печати</label><input type="date" id="print-date"></div>
+    </div>
+    <div class="three-col">
+      <div class="form-row"><label class="form-label">Вес (г)</label><input type="number" id="print-grams" placeholder="45"></div>
+      <div class="form-row"><label class="form-label">Время печати</label><input type="text" id="print-time" placeholder="15ч 30м"></div>
+      <div class="form-row"><label class="form-label">Стоимость PLA (₾)</label><input type="number" id="print-cost" placeholder="3.50" step="0.01"></div>
+    </div>
+    <div class="two-col">
+      <div class="form-row"><label class="form-label">Филамент</label>
+        <select id="print-filament"><option>Bambu PLA Basic — белый</option><option>Bambu PLA Basic — чёрный</option><option>Bambu PLA Basic — серый</option><option>Bambu PLA Basic — красный</option><option>Bambu PLA Basic — синий</option><option>Bambu PLA Matte</option><option>Другой</option></select>
+      </div>
+      <div class="form-row"><label class="form-label">Категория</label>
+        <select id="print-cat"><option value="figure">Фигурка / фэндом</option><option value="decor">Декор / интерьер</option><option value="practical">Практичный предмет</option><option value="test">Тест / калибровка</option><option value="custom">Кастомный заказ</option></select>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="form-row"><label class="form-label">Постобработка</label>
+        <select id="print-post"><option value="none">Нет</option><option value="sand">Шлифовка</option><option value="paint">Покраска</option><option value="full">Полная (грунт + покраска + лак)</option><option value="airbrush">Аэрограф</option></select>
+      </div>
+      <div class="form-row"><label class="form-label">Качество</label>
+        <select id="print-quality"><option value="5">Отлично</option><option value="4">Хорошо</option><option value="3">Нормально</option><option value="2">Слабо</option><option value="1">Брак</option></select>
+      </div>
+    </div>
+    <div class="form-row"><label class="form-label">Заметки</label><textarea id="print-notes" placeholder="Что получилось хорошо, что нет..."></textarea></div>
+    <!-- Media uploads -->
+    <div class="form-row" style="margin-top:4px">
+      <label class="form-label">Медиафайлы (Google Drive)</label>
+      <div class="media-grid">
+        <div class="file-zone" id="fz-photo-initial" onclick="triggerFile('fi-photo-initial')">
+          <div class="file-zone-icon"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="var(--text3)" stroke-width="1.5"><rect x="2" y="4" width="16" height="12" rx="2"/><circle cx="10" cy="10" r="3"/></svg></div>
+          <div class="file-zone-text"><div class="file-zone-title" id="fz-pi-title">Фото: после печати</div><div class="file-zone-sub">jpg, png</div></div>
+        </div>
+        <div class="file-zone" id="fz-photo-post" onclick="triggerFile('fi-photo-post')">
+          <div class="file-zone-icon"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="var(--text3)" stroke-width="1.5"><rect x="2" y="4" width="16" height="12" rx="2"/><circle cx="10" cy="10" r="3"/></svg></div>
+          <div class="file-zone-text"><div class="file-zone-title" id="fz-pp-title">Фото: постобработка</div><div class="file-zone-sub">jpg, png</div></div>
+        </div>
+        <div class="file-zone" id="fz-photo-final" onclick="triggerFile('fi-photo-final')">
+          <div class="file-zone-icon"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="var(--text3)" stroke-width="1.5"><rect x="2" y="4" width="16" height="12" rx="2"/><circle cx="10" cy="10" r="3"/></svg></div>
+          <div class="file-zone-text"><div class="file-zone-title" id="fz-pf-title">Фото: финал</div><div class="file-zone-sub">jpg, png</div></div>
+        </div>
+        <div class="file-zone" id="fz-video" onclick="triggerFile('fi-video')">
+          <div class="file-zone-icon"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="var(--text3)" stroke-width="1.5"><path d="M4 6a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"/><path d="M8 9l4 2.5L8 14V9z"/></svg></div>
+          <div class="file-zone-text"><div class="file-zone-title" id="fz-v-title">Таймлапс</div><div class="file-zone-sub">mp4, mov</div></div>
+        </div>
+      </div>
+      <input type="file" id="fi-photo-initial" accept="image/*" onchange="uploadFile('fi-photo-initial','fz-photo-initial','photo_initial')">
+      <input type="file" id="fi-photo-post" accept="image/*" onchange="uploadFile('fi-photo-post','fz-photo-post','photo_post')">
+      <input type="file" id="fi-photo-final" accept="image/*" onchange="uploadFile('fi-photo-final','fz-photo-final','photo_final')">
+      <input type="file" id="fi-video" accept="video/*" onchange="uploadFile('fi-video','fz-video','video')">
+    </div>
+    <button class="btn btn-primary" onclick="addPrint()" id="btn-add-print" style="margin-top:4px">Добавить изделие</button>
+  </div>
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+      <div class="card-title" style="margin-bottom:0">Все изделия</div>
+      <div style="font-size:12px;color:var(--text3)" id="print-total-stat"></div>
+    </div>
+    <div id="print-list"><div class="empty">Загрузка...</div></div>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div id="tab-settings" class="section">
+  <div class="page-title">Настройки</div>
+  <div class="page-sub">Параметры расчёта себестоимости и цены продажи</div>
+  <!-- Google Drive auth -->
+  <div class="card">
+    <div class="card-title">Google Drive</div>
+    <div id="gdrive-bar-settings"></div>
+    <p style="font-size:12px;color:var(--text3);margin-top:8px">Авторизуйтесь для загрузки фото, видео и STL файлов на ваш Google Drive</p>
+  </div>
+  <div class="card">
+    <div class="card-title">Параметры оборудования и эксплуатации</div>
+    <div class="three-col">
+      <div class="form-row"><label class="form-label">Стоимость оборудования (₾)</label><input type="number" id="s-printer-cost" step="100"></div>
+      <div class="form-row"><label class="form-label">Ресурс оборудования (ч)</label><input type="number" id="s-printer-hours" step="100"></div>
+      <div class="form-row"><label class="form-label">Резерв на обслуживание (₾)</label><input type="number" id="s-service-reserve" step="50"></div>
+    </div>
+    <div class="three-col">
+      <div class="form-row"><label class="form-label">Потребление принтера (кВт)</label><input type="number" id="s-power" step="0.1"></div>
+      <div class="form-row"><label class="form-label">Цена электричества (₾/кВт·ч)</label><input type="number" id="s-electricity" step="0.01"></div>
+      <div class="form-row"><label class="form-label">Цена филамента (₾/кг)</label><input type="number" id="s-filament" step="0.5"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Профили клиентов</div>
+    <div class="profile-tabs">
+      <button class="profile-tab active" onclick="switchProfile('regular',this)">Обычный клиент</button>
+      <button class="profile-tab" onclick="switchProfile('partner',this)">Партнёр</button>
+    </div>
+    <div id="profile-regular">
+      <div class="three-col">
+        <div class="form-row"><label class="form-label">Ставка труда (₾/ч)</label><input type="number" id="s-labor" step="1"></div>
+        <div class="form-row"><label class="form-label">Наценка (%)</label><input type="number" id="s-markup" step="5"></div>
+        <div class="form-row"><label class="form-label">Комиссия / налог (%)</label><input type="number" id="s-commission" step="1"></div>
+      </div>
+      <div class="form-row" style="max-width:200px"><label class="form-label">Брак по умолчанию (%)</label><input type="number" id="s-defect" step="1"></div>
+    </div>
+    <div id="profile-partner" style="display:none">
+      <div class="three-col">
+        <div class="form-row"><label class="form-label">Ставка труда (₾/ч)</label><input type="number" id="s-partner-labor" step="1"></div>
+        <div class="form-row"><label class="form-label">Наценка (%)</label><input type="number" id="s-partner-markup" step="5"></div>
+        <div class="form-row"><label class="form-label">Комиссия / налог (%)</label><input type="number" id="s-partner-commission" step="1"></div>
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-primary" onclick="saveSettings()" id="btn-save-settings">Сохранить настройки</button>
+</div>
+
+</main>
 </div>
 <div class="toast" id="toast"></div>
 
 <script>
-var SB_URL = 'https://benyzzcykhybbttmkxyi.supabase.co';
-var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJlbnl6emN5a2h5YmJ0dG1reHlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwNzQxMjYsImV4cCI6MjA5MTY1MDEyNn0.hR6Q1PbHOt9qy0WeM2wBcI5Uza6JIprk2xgDd5SU36g';
+// ── Config ────────────────────────────────────────────────────────────
+var SB='https://benyzzcykhybbttmkxyi.supabase.co';
+var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJlbnl6emN5a2h5YmJ0dG1reHlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwNzQxMjYsImV4cCI6MjA5MTY1MDEyNn0.hR6Q1PbHOt9qy0WeM2wBcI5Uza6JIprk2xgDd5SU36g';
+var GCLIENT='587009492758-2noijfvhv5iskeqp9e39485nmcafm5h4.apps.googleusercontent.com';
+var GSCOPES='https://www.googleapis.com/auth/drive.file';
+var FOLDER_NAME='Craftorai Studio';
 
-var state = { posts: [], prints: [] };
-var genType = 'timelapse';
-var syncOk = false;
+// ── State ─────────────────────────────────────────────────────────────
+var state={posts:[],prints:[],queue:[],settings:{}};
+var genType='timelapse';
+var gToken=null;
+var gUser=null;
+var gFolderId=null;
+var pendingFiles={};
 
-var typeLabels = {timelapse:'Рилс-таймлапс','before-after':'До/после',carousel:'Карусель',static:'Статичный',stories:'Сторис'};
-var statusLabels = {idea:'Идея',filming:'Съёмка',editing:'Монтаж',published:'Опубликовано'};
-var catLabels = {figure:'Фигурка',decor:'Декор',practical:'Практичный',test:'Тест',custom:'Кастом'};
-var postLabels = {none:'Без обработки',sand:'Шлифовка',paint:'Покраска',full:'Полная обработка',airbrush:'Аэрограф'};
-var qualityStars = {'5':'★★★★★','4':'★★★★☆','3':'★★★☆☆','2':'★★☆☆☆','1':'★☆☆☆☆'};
+// ── Labels ────────────────────────────────────────────────────────────
+var TL={timelapse:'Рилс-таймлапс','before-after':'До/после',carousel:'Карусель',static:'Статичный',stories:'Сторис'};
+var SL={idea:'Идея',filming:'Съёмка',editing:'Монтаж',published:'Опубликовано'};
+var CL={figure:'Фигурка',decor:'Декор',practical:'Практичный',test:'Тест',custom:'Кастом'};
+var PL={none:'Без обработки',sand:'Шлифовка',paint:'Покраска',full:'Полная обработка',airbrush:'Аэрограф'};
+var QS={'5':'★★★★★','4':'★★★★☆','3':'★★★☆☆','2':'★★☆☆☆','1':'★☆☆☆☆'};
+var CC={figure:'badge-before-after',decor:'badge-timelapse',practical:'badge-static',test:'badge-stories',custom:'badge-carousel'};
+var QL={queued:'В очереди',printing:'Печатается',done:'Готово'};
 
-// ── Supabase helpers ─────────────────────────────────────────────────
-function sbFetch(path, opts) {
-  var url = SB_URL + '/rest/v1/' + path;
-  var headers = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
-  return fetch(url, Object.assign({ headers: headers }, opts || {}));
-}
+// ── Supabase ──────────────────────────────────────────────────────────
+function H(){return{apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json',Prefer:'return=representation'};}
+function sGet(t,q){return fetch(SB+'/rest/v1/'+t+(q||'?order=created_at.asc'),{headers:H()}).then(function(r){return r.json();});}
+function sIns(t,d){return fetch(SB+'/rest/v1/'+t,{method:'POST',headers:H(),body:JSON.stringify(d)}).then(function(r){return r.json();});}
+function sUpd(t,id,d){return fetch(SB+'/rest/v1/'+t+'?id=eq.'+id,{method:'PATCH',headers:H(),body:JSON.stringify(d)}).then(function(r){return r.json();});}
+function sDel(t,id){return fetch(SB+'/rest/v1/'+t+'?id=eq.'+id,{method:'DELETE',headers:H()});}
 
-function sbGet(table) {
-  return sbFetch(table + '?order=created_at.asc').then(function(r){ return r.json(); });
-}
-
-function sbInsert(table, data) {
-  return sbFetch(table, { method: 'POST', body: JSON.stringify(data) }).then(function(r){ return r.json(); });
-}
-
-function sbUpdate(table, id, data) {
-  return sbFetch(table + '?id=eq.' + id, { method: 'PATCH', body: JSON.stringify(data) }).then(function(r){ return r.json(); });
-}
-
-function sbDelete(table, id) {
-  return sbFetch(table + '?id=eq.' + id, { method: 'DELETE' });
-}
-
-// ── Sync status ──────────────────────────────────────────────────────
-function setSyncStatus(status, label) {
-  var dot = document.getElementById('sync-dot');
-  var lbl = document.getElementById('sync-label');
-  dot.className = 'sync-dot ' + (status === 'ok' ? 'ok' : status === 'err' ? 'err' : 'syncing');
-  lbl.textContent = label;
-  syncOk = (status === 'ok');
-}
-
-// ── Load data ────────────────────────────────────────────────────────
-function loadAll() {
-  setSyncStatus('syncing', 'Загрузка...');
-  Promise.all([sbGet('posts'), sbGet('prints')]).then(function(results) {
-    var posts = results[0], prints = results[1];
-    if (posts && !posts.error) { state.posts = posts; } else { throw new Error('posts error'); }
-    if (prints && !prints.error) { state.prints = prints; } else { throw new Error('prints error'); }
-    setSyncStatus('ok', 'Синхронизировано');
-    renderDashboard();
-    renderPlan();
-    renderPrints();
-  }).catch(function(e) {
-    setSyncStatus('err', 'Ошибка синхронизации');
-    toast('Ошибка подключения к базе данных', true);
+// ── Google Drive ──────────────────────────────────────────────────────
+function initGoogleAuth(){
+  if(typeof google==='undefined')return;
+  window._gisClient=google.accounts.oauth2.initTokenClient({
+    client_id:GCLIENT,scope:GSCOPES,
+    callback:function(resp){
+      if(resp.access_token){
+        gToken=resp.access_token;
+        fetchGUserInfo();
+      }
+    }
   });
 }
 
-// ── UI helpers ───────────────────────────────────────────────────────
-function toast(msg, isErr) {
-  var el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = 'toast' + (isErr ? ' error' : '') + ' show';
-  setTimeout(function(){ el.className = 'toast'; }, 2500);
+function signInGoogle(){
+  if(!window._gisClient){initGoogleAuth();}
+  if(window._gisClient)window._gisClient.requestAccessToken();
+  else toast('Google API ещё загружается, подожди секунду');
 }
 
-function showTab(t) {
-  var tabs = ['dashboard','planner','generate','hashtags','prints'];
-  document.querySelectorAll('.nav-item').forEach(function(b, i){ b.classList.toggle('active', tabs[i] === t); });
-  document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('active'); });
-  document.getElementById('tab-' + t).classList.add('active');
-  if (t === 'hashtags') renderHashtags();
+function signOutGoogle(){
+  if(gToken)google.accounts.oauth2.revoke(gToken);
+  gToken=null;gUser=null;gFolderId=null;
+  renderAllGDriveBars();
+  toast('Выход из Google выполнен');
 }
 
-// ── Dashboard ────────────────────────────────────────────────────────
-function renderDashboard() {
-  var pub = state.posts.filter(function(p){ return p.status === 'published'; }).length;
-  var inw = state.posts.filter(function(p){ return p.status === 'filming' || p.status === 'editing'; }).length;
-  var g   = state.prints.reduce(function(a, p){ return a + (parseInt(p.grams) || 0); }, 0);
-  document.getElementById('m-published').textContent = pub;
-  document.getElementById('m-inwork').textContent    = inw;
-  document.getElementById('m-prints').textContent    = state.prints.length;
-  document.getElementById('m-grams').textContent     = g + 'г';
-
-  var dp = document.getElementById('dash-posts');
-  var recent = state.posts.slice(-5).reverse();
-  dp.innerHTML = recent.length ? recent.map(function(p){
-    return '<div class="content-row"><span class="badge badge-' + p.type + '">' + typeLabels[p.type] + '</span>'
-      + '<span class="content-title">' + p.title + '</span>'
-      + '<span class="badge badge-' + p.status + '">' + statusLabels[p.status] + '</span></div>';
-  }).join('') : '<div class="empty">Постов пока нет</div>';
-
-  var df = document.getElementById('dash-formats');
-  var types = ['timelapse','before-after','carousel','static','stories'];
-  var total = state.posts.length || 1;
-  df.innerHTML = types.map(function(t){
-    var cnt = state.posts.filter(function(p){ return p.type === t; }).length;
-    var pct = Math.round(cnt / total * 100);
-    return '<div class="progress-row"><div class="progress-header"><span>' + typeLabels[t] + '</span><span>' + cnt + '</span></div>'
-      + '<div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div></div>';
-  }).join('');
-
-  var dpr = document.getElementById('dash-prints');
-  var rp = state.prints.slice(-3).reverse();
-  dpr.innerHTML = rp.length ? rp.map(function(p){
-    return '<div class="content-row"><span class="content-title">' + p.name + '</span>'
-      + '<span class="content-meta">' + (p.grams ? p.grams + 'г · ' : '') + (p.time_spent || '') + '</span>'
-      + '<span style="color:var(--amber);font-size:12px">' + (qualityStars[p.quality] || '') + '</span></div>';
-  }).join('') : '<div class="empty">Изделий пока нет</div>';
+function fetchGUserInfo(){
+  fetch('https://www.googleapis.com/oauth2/v3/userinfo',{headers:{Authorization:'Bearer '+gToken}})
+  .then(function(r){return r.json();}).then(function(u){
+    gUser=u;
+    ensureDriveFolder().then(function(){renderAllGDriveBars();toast('Google Drive подключён ✓');});
+  }).catch(function(){renderAllGDriveBars();});
 }
 
-// ── Planner ──────────────────────────────────────────────────────────
-function addPost() {
-  var title = document.getElementById('plan-title').value.trim();
-  if (!title) { toast('Введи название поста'); return; }
-  var data = {
-    type:   document.getElementById('plan-type').value,
-    date:   document.getElementById('plan-date').value || null,
-    title:  title,
-    status: document.getElementById('plan-status').value,
-    lang:   document.getElementById('plan-lang').value,
-    notes:  document.getElementById('plan-notes').value
-  };
-  setSyncStatus('syncing', 'Сохранение...');
-  sbInsert('posts', data).then(function(res) {
-    if (res && res[0]) {
-      state.posts.push(res[0]);
-      setSyncStatus('ok', 'Сохранено');
-      ['plan-title','plan-date','plan-notes'].forEach(function(id){ document.getElementById(id).value = ''; });
-      renderPlan();
-      renderDashboard();
-      toast('Пост добавлен');
-    } else { throw new Error(); }
-  }).catch(function(){ setSyncStatus('err', 'Ошибка'); toast('Ошибка сохранения', true); });
+function ensureDriveFolder(){
+  return fetch("https://www.googleapis.com/drive/v3/files?q=name%3D'"+FOLDER_NAME+"'+and+mimeType%3D'application%2Fvnd.google-apps.folder'+and+trashed%3Dfalse&fields=files(id,name)",{headers:{Authorization:'Bearer '+gToken}})
+  .then(function(r){return r.json();}).then(function(d){
+    if(d.files&&d.files.length){gFolderId=d.files[0].id;return;}
+    return fetch('https://www.googleapis.com/drive/v3/files',{method:'POST',headers:{Authorization:'Bearer '+gToken,'Content-Type':'application/json'},body:JSON.stringify({name:FOLDER_NAME,mimeType:'application/vnd.google-apps.folder'})})
+    .then(function(r){return r.json();}).then(function(f){gFolderId=f.id;});
+  });
 }
 
-function renderPlan() {
-  var fs = document.getElementById('filter-status') ? document.getElementById('filter-status').value : '';
-  var ft = document.getElementById('filter-type') ? document.getElementById('filter-type').value : '';
-  var list = state.posts.filter(function(p){ return (!fs || p.status === fs) && (!ft || p.type === ft); })
-    .sort(function(a, b){ return (a.date || '9') > (b.date || '9') ? 1 : -1; });
-  var el = document.getElementById('plan-list');
-  if (!el) return;
-  if (!list.length) { el.innerHTML = '<div class="empty">Нет постов. Добавь первый выше.</div>'; return; }
-  el.innerHTML = list.map(function(p){
-    return '<div class="content-row">'
-      + '<span class="badge badge-' + p.type + '">' + typeLabels[p.type] + '</span>'
-      + '<span class="content-title">' + p.title + '</span>'
-      + (p.date ? '<span class="content-meta">' + p.date + '</span>' : '')
-      + '<select onchange="updateStatus(' + p.id + ',this.value)" style="width:auto;padding:3px 8px;font-size:11px;margin-left:4px">'
-        + ['idea','filming','editing','published'].map(function(s){
-          return '<option value="' + s + '"' + (p.status === s ? ' selected' : '') + '>' + statusLabels[s] + '</option>';
-        }).join('')
-      + '</select>'
-      + '<button class="del-btn" onclick="deletePost(' + p.id + ')">×</button>'
-      + '</div>';
-  }).join('');
+function uploadFileToDrive(file, subfolder){
+  if(!gToken){toast('Сначала войдите в Google Drive');return Promise.reject('no auth');}
+  var folderPromise=gFolderId?Promise.resolve(gFolderId):ensureDriveFolder().then(function(){return gFolderId;});
+  return folderPromise.then(function(parentId){
+    // Create subfolder if needed
+    return fetch("https://www.googleapis.com/drive/v3/files?q=name%3D'"+subfolder+"'+and+'"+parentId+"'+in+parents+and+mimeType%3D'application%2Fvnd.google-apps.folder'+and+trashed%3Dfalse&fields=files(id)",{headers:{Authorization:'Bearer '+gToken}})
+    .then(function(r){return r.json();}).then(function(d){
+      if(d.files&&d.files.length)return d.files[0].id;
+      return fetch('https://www.googleapis.com/drive/v3/files',{method:'POST',headers:{Authorization:'Bearer '+gToken,'Content-Type':'application/json'},body:JSON.stringify({name:subfolder,mimeType:'application/vnd.google-apps.folder',parents:[parentId]})})
+      .then(function(r){return r.json();}).then(function(f){return f.id;});
+    });
+  }).then(function(subFolderId){
+    var meta={name:file.name,parents:[subFolderId]};
+    var form=new FormData();
+    form.append('metadata',new Blob([JSON.stringify(meta)],{type:'application/json'}));
+    form.append('file',file);
+    return fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,webViewLink,webContentLink',{method:'POST',headers:{Authorization:'Bearer '+gToken},body:form});
+  }).then(function(r){return r.json();});
 }
 
-function updateStatus(id, val) {
-  var p = state.posts.find(function(x){ return x.id === id; });
-  if (!p) return;
-  p.status = val;
-  setSyncStatus('syncing', 'Сохранение...');
-  sbUpdate('posts', id, { status: val }).then(function(){
-    setSyncStatus('ok', 'Сохранено');
-    renderDashboard();
-  }).catch(function(){ setSyncStatus('err', 'Ошибка'); });
+function triggerFile(inputId){
+  if(!gToken){signInGoogle();return;}
+  document.getElementById(inputId).click();
 }
 
-function deletePost(id) {
-  state.posts = state.posts.filter(function(p){ return p.id !== id; });
-  renderPlan(); renderDashboard();
-  sbDelete('posts', id).then(function(){ setSyncStatus('ok', 'Удалено'); toast('Удалено'); })
-    .catch(function(){ setSyncStatus('err', 'Ошибка'); });
-}
-
-// ── Generator ────────────────────────────────────────────────────────
-function selectGenType(el) {
-  document.querySelectorAll('.gen-type-btn').forEach(function(b){ b.classList.remove('selected'); });
-  el.classList.add('selected');
-  genType = el.dataset.val;
-}
-
-function generateContent() {
-  var subj = document.getElementById('gen-subject').value.trim();
-  var lang = document.getElementById('gen-lang').value;
-  var ctx  = document.getElementById('gen-context').value.trim();
-  if (!subj) { toast('Укажи тему поста'); return; }
-  document.getElementById('gen-result-card').style.display = 'block';
-  var out = document.getElementById('gen-output');
-  out.innerHTML = '<span style="color:var(--text3);font-style:italic">Генерирую...</span>';
-  document.getElementById('gen-btn').disabled = true;
-  var typePrompts = {
-    timelapse:'Напиши описание рилса-таймлапса для Instagram. 1 хук, 2-3 строки про процесс, CTA.',
-    'before-after':'Напиши описание поста "до/после + постобработка". Хук, что делалось, результат, CTA.',
-    carousel:'Напиши сценарий карусели. Заголовок + слайды 2-5 (по 1-2 предложения) + финальный CTA.',
-    static:'Напиши описание статичного поста с фото изделия. Лаконично, 3-4 строки.',
-    stories:'Напиши сценарий 4 сторис. Для каждой: что на экране + текст.',
-    hook:'Напиши 5 разных хуков для рилса. Стили: вопрос, факт, провокация, история, обещание.'
-  };
-  var langInstr = lang==='ru' ? 'Только русский язык.' : lang==='ka' ? 'მხოლოდ ქართული ენა.' : 'Сначала русский, затем "———", затем грузинский.';
-  var prompt = 'Ты контент-менеджер бренда Craftorai (@craftorai.ge) — мастерская 3D печати в Тбилиси. Принтер: Bambu Lab P1S Combo. Бренд: крафтовый, живой, доступный.\n\nТема: "' + subj + '".' + (ctx ? '\nКонтекст: ' + ctx : '') + '\n\n' + typePrompts[genType] + ' ' + langInstr + '\n\nТолько текст поста, без пояснений.';
-  fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST', headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
-  }).then(function(r){ return r.json(); }).then(function(d){
-    out.textContent = (d.content && d.content[0] && d.content[0].text) || 'Ошибка генерации';
-    document.getElementById('gen-btn').disabled = false;
+function uploadFile(inputId,zoneId,field){
+  var file=document.getElementById(inputId).files[0];
+  if(!file)return;
+  var zone=document.getElementById(zoneId);
+  zone.classList.add('uploading');
+  var titleEl=zone.querySelector('.file-zone-title');
+  if(titleEl)titleEl.textContent='Загружаю...';
+  var subfolder=field.includes('photo')||field==='video'?'Media':'STL';
+  uploadFileToDrive(file,subfolder).then(function(f){
+    if(f.id){
+      pendingFiles[field+'_url']=f.webViewLink||('https://drive.google.com/file/d/'+f.id+'/view');
+      pendingFiles[field+'_name']=file.name;
+      zone.classList.remove('uploading');
+      zone.classList.add('filled');
+      if(titleEl)titleEl.textContent=file.name.length>20?file.name.substring(0,18)+'...':file.name;
+      toast('Загружено: '+file.name);
+    }else{
+      zone.classList.remove('uploading');
+      if(titleEl)titleEl.textContent='Ошибка загрузки';
+      toast('Ошибка загрузки файла');
+    }
   }).catch(function(){
-    out.textContent = 'Ошибка соединения.';
-    document.getElementById('gen-btn').disabled = false;
+    zone.classList.remove('uploading');
+    if(titleEl)titleEl.textContent='Ошибка';
+    toast('Ошибка загрузки');
   });
 }
 
-function copyGen() {
-  navigator.clipboard.writeText(document.getElementById('gen-output').textContent)
-    .then(function(){ toast('Скопировано!'); });
+function gDriveBarHTML(page){
+  if(!gToken){
+    return '<div class="gdrive-bar"><div class="gdrive-avatar"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 10l4 4 8-8"/></svg></div><div class="gdrive-info"><div class="gdrive-name">Google Drive не подключён</div><div class="gdrive-sub">Файлы не будут сохранены</div></div><button class="btn btn-sm btn-primary" onclick="signInGoogle()">Войти в Google</button></div>';
+  }
+  var avatar=gUser&&gUser.picture?'<img src="'+gUser.picture+'" alt="">':'GD';
+  var name=gUser&&gUser.name?gUser.name:'Google пользователь';
+  return '<div class="gdrive-bar"><div class="gdrive-avatar">'+avatar+'</div><div class="gdrive-info"><div class="gdrive-name">'+name+'</div><div class="gdrive-sub">Папка: '+FOLDER_NAME+(gFolderId?' · подключена':' · создаётся...')+'</div></div><button class="btn btn-sm" onclick="signOutGoogle()">Выйти</button></div>';
 }
 
-function saveToPlanner() {
-  var subj = document.getElementById('gen-subject').value.trim() || 'Пост';
-  var data = { type: genType, title: subj, status: 'idea', lang: 'ru' };
-  sbInsert('posts', data).then(function(res){
-    if (res && res[0]) { state.posts.push(res[0]); renderPlan(); toast('Добавлено в план'); }
+function renderAllGDriveBars(){
+  ['queue','prints','settings'].forEach(function(p){
+    var el=document.getElementById('gdrive-bar-'+p);
+    if(el)el.innerHTML=gDriveBarHTML(p);
   });
 }
 
-// ── Hashtags ─────────────────────────────────────────────────────────
-var tagsData = {
-  en: ['#3dprinting','#3dprint','#bambulab','#pla','#3dprintedart','#3dprinted','#3dprintcommunity','#fdm','#3dmodel','#makersofinstagram','#3ddesign','#filament'],
-  ru: ['#3Dпечать','#3Dпринтер','#3Dмодель','#печатьназаказ','#3Dфигурки','#бамбулаб','#PLAпластик','#мастерская','#крафт'],
-  ka: ['#3ბეჭდვა','#3Dპრინტი','#ხელნაკეთი','#თბილისი','#tbilisi','#georgia','#handmadegeorgia'],
-  brand: ['#craftorai','#craftoraige','#craftorai_ge']
-};
+// ── Utils ─────────────────────────────────────────────────────────────
+function toast(m){var e=document.getElementById('toast');e.textContent=m;e.classList.add('show');setTimeout(function(){e.classList.remove('show');},2500);}
+function n2(v){return isNaN(v)||v===null?0:Number(v);}
+function fmt(v){return n2(v).toFixed(2);}
 
-function renderHashtags() {
-  ['en','ru','ka','brand'].forEach(function(k){
-    var el = document.getElementById('tags-' + k);
-    if (el) el.innerHTML = tagsData[k].map(function(t){ return '<span class="tag">' + t + '</span>'; }).join('');
-  });
+function sync(s){
+  var el=document.getElementById('sync-status');if(!el)return;
+  var m={ok:['sync-badge','Синхронизировано'],syncing:['sync-badge syncing','Синхронизация...'],error:['sync-badge error','Ошибка']};
+  var i=m[s]||m.ok;el.className=i[0];el.innerHTML='<div class="sync-dot"></div><span>'+i[1]+'</span>';
 }
 
-function copyAllTags() {
-  var all = [].concat(tagsData.brand, tagsData.en, tagsData.ru, tagsData.ka).join(' ');
-  navigator.clipboard.writeText(all).then(function(){ toast('Все хэштеги скопированы!'); });
+function showTab(t){
+  var tabs=['dashboard','planner','generate','hashtags','queue','prints','settings'];
+  document.querySelectorAll('.nav-item').forEach(function(b,i){b.classList.toggle('active',tabs[i]===t);});
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('tab-'+t).classList.add('active');
+  if(t==='hashtags')renderHashtags();
+  if(t==='settings')loadSettingsForm();
+  if(t==='queue'){renderAllGDriveBars();sync('syncing');sGet('print_queue').then(function(r){state.queue=Array.isArray(r)?r:[];sync('ok');renderQueue();renderDashboard();});}
+  if(t==='prints'){renderAllGDriveBars();sync('syncing');sGet('prints').then(function(r){state.prints=Array.isArray(r)?r:[];sync('ok');renderPrints();});}
+  if(t==='planner'){sync('syncing');sGet('posts').then(function(r){state.posts=Array.isArray(r)?r:[];sync('ok');renderPlan();renderDashboard();});}
 }
 
-function generateTags() {
-  var subj = document.getElementById('tag-subject').value.trim();
-  if (!subj) { toast('Опиши пост'); return; }
-  var out = document.getElementById('custom-tags-out');
-  out.innerHTML = '<div style="font-size:12px;color:var(--text3)">Подбираю...</div>';
-  document.getElementById('tag-btn').disabled = true;
-  var prompt = 'Подбери 24 хэштега Instagram для Craftorai (3D печать, Тбилиси). Тема: "' + subj + '". Формат: 6 популярных английских, 5 нишевых английских, 5 русских, 4 грузинских, 2 локальных (tbilisi/georgia), 2 брендовых (#craftorai). Только хэштеги через пробел.';
-  fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST', headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,messages:[{role:'user',content:prompt}]})
-  }).then(function(r){ return r.json(); }).then(function(d){
-    var text = (d.content && d.content[0] && d.content[0].text) || '';
-    var tags = text.trim().split(/\s+/).filter(function(t){ return t.startsWith('#'); });
-    var allStr = tags.join(' ');
-    out.innerHTML = '<div class="tag-row">' + tags.map(function(t){ return '<span class="tag">' + t + '</span>'; }).join('') + '</div>'
-      + '<button class="btn btn-sm" style="margin-top:10px" onclick="navigator.clipboard.writeText(\'' + allStr.replace(/'/g,"\\'") + '\').then(function(){toast(\'Скопировано!\')})">Скопировать</button>';
-    document.getElementById('tag-btn').disabled = false;
-  }).catch(function(){
-    out.innerHTML = '<div style="font-size:12px;color:var(--text3)">Ошибка.</div>';
-    document.getElementById('tag-btn').disabled = false;
-  });
+// ── Calc engine ───────────────────────────────────────────────────────
+function calcCost(params, cfg, clientType){
+  var s=cfg||state.settings;
+  var isPartner=(clientType||'regular')==='partner';
+  var filamentPrice=n2(s.filament_price);
+  var elecPrice=n2(s.electricity_price);
+  var printerCost=n2(s.printer_cost);
+  var printerHours=n2(s.printer_hours)||1;
+  var serviceReserve=n2(s.service_reserve);
+  var power=n2(s.power_consumption);
+  var laborRate=isPartner?n2(s.partner_labor_rate):n2(s.labor_rate);
+  var markupPct=isPartner?n2(s.partner_markup_pct):n2(s.markup_pct);
+  var commissionPct=isPartner?n2(s.partner_commission_pct):n2(s.commission_pct);
+  var defectPct=n2(params.defect_override!==undefined&&params.defect_override!==null?params.defect_override:s.defect_pct);
+
+  var grams=n2(params.grams);
+  var printHours=n2(params.print_hours);
+  var prepHours=n2(params.prep_hours);
+  var postHours=n2(params.post_hours);
+  var postMaterials=n2(params.post_materials);
+  var packaging=n2(params.packaging);
+
+  var filament=grams*filamentPrice/1000;
+  var electricity=printHours*power*elecPrice;
+  var amortPerHour=printerCost/printerHours;
+  var amort=amortPerHour*printHours;
+  var servicePerHour=serviceReserve/printerHours;
+  var service=servicePerHour*printHours;
+  var labor=(prepHours+postHours)*laborRate;
+  var base=filament+electricity+amort+service+labor+postMaterials+packaging;
+  var defectAdd=base*(defectPct/100);
+  var costWithDefect=base+defectAdd;
+  var priceBeforeComm=costWithDefect*(1+markupPct/100);
+  var finalPrice=commissionPct>0?priceBeforeComm/(1-commissionPct/100):priceBeforeComm;
+  var profit=finalPrice-costWithDefect;
+
+  return{filament:filament,electricity:electricity,amort:amort,service:service,labor:labor,
+    postMaterials:postMaterials,packaging:packaging,base:base,defectAdd:defectAdd,
+    cost:costWithDefect,priceBeforeComm:priceBeforeComm,finalPrice:finalPrice,profit:profit,
+    amortPerHour:amortPerHour,servicePerHour:servicePerHour,laborRate:laborRate,
+    markupPct:markupPct,commissionPct:commissionPct,defectPct:defectPct};
 }
 
-// ── Prints ───────────────────────────────────────────────────────────
-function addPrint() {
-  var name = document.getElementById('print-name').value.trim();
-  if (!name) { toast('Введи название'); return; }
-  var data = {
-    name:        name,
-    date:        document.getElementById('print-date').value || null,
-    grams:       parseInt(document.getElementById('print-grams').value) || null,
-    time_spent:  document.getElementById('print-time').value,
-    cost:        document.getElementById('print-cost').value,
-    filament:    document.getElementById('print-filament').value,
-    cat:         document.getElementById('print-cat').value,
-    post_process:document.getElementById('print-post').value,
-    quality:     document.getElementById('print-quality').value,
-    notes:       document.getElementById('print-notes').value
-  };
-  setSyncStatus('syncing', 'Сохранение...');
-  sbInsert('prints', data).then(function(res){
-    if (res && res[0]) {
-      state.prints.push(res[0]);
-      setSyncStatus('ok', 'Сохранено');
-      ['print-name','print-date','print-grams','print-time','print-cost','print-notes'].forEach(function(id){ document.getElementById(id).value = ''; });
-      renderPrints();
-      renderDashboard();
-      toast('Изделие добавлено');
-    } else { throw new Error(); }
-  }).catch(function(){ setSyncStatus('err', 'Ошибка'); toast('Ошибка сохранения', true); });
-}
-
-function renderPrints() {
-  var el = document.getElementById('print-list');
-  var stat = document.getElementById('print-total-stat');
-  if (!el) return;
-  if (!state.prints.length) { el.innerHTML = '<div class="empty">Добавь первое изделие</div>'; stat.textContent = ''; return; }
-  var totalG = state.prints.reduce(function(a,p){ return a + (parseInt(p.grams) || 0); }, 0);
-  stat.textContent = state.prints.length + ' изделий · ' + totalG + 'г';
-  var catColors = {figure:'badge-before-after',decor:'badge-timelapse',practical:'badge-static',test:'badge-stories',custom:'badge-carousel'};
-  el.innerHTML = state.prints.slice().reverse().map(function(p){
-    return '<div class="print-row">'
-      + '<div class="print-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--accent)" stroke-width="1.5"><rect x="3" y="8" width="14" height="9" rx="1.5"/><path d="M7 8V6a3 3 0 016 0v2"/></svg></div>'
-      + '<div class="print-info">'
-        + '<div class="print-name">' + p.name + (p.date ? ' <span style="font-size:11px;color:var(--text3);font-weight:400">· ' + p.date + '</span>' : '') + '</div>'
-        + '<div class="print-sub">' + (p.grams ? p.grams + 'г · ' : '') + (p.time_spent ? p.time_spent + ' · ' : '') + (p.filament || '') + '</div>'
-        + '<div class="print-badges">'
-          + '<span class="badge ' + (catColors[p.cat] || 'badge-idea') + '">' + (catLabels[p.cat] || p.cat) + '</span>'
-          + '<span class="badge badge-idea">' + (postLabels[p.post_process] || '') + '</span>'
-          + (p.quality ? '<span style="color:var(--amber);font-size:12px">' + (qualityStars[p.quality] || '') + '</span>' : '')
-        + '</div>'
-        + (p.notes ? '<div style="font-size:12px;color:var(--text3);margin-top:4px">' + p.notes + '</div>' : '')
-      + '</div>'
-      + '<button class="del-btn" onclick="deletePrint(' + p.id + ')">×</button>'
-      + '</div>';
+function calcBoxHTML(c, showAll){
+  if(!c)return'';
+  var rows=[
+    ['section','Себестоимость'],
+    ['Филамент',fmt(c.filament)+' ₾'],
+    ['Электричество',fmt(c.electricity)+' ₾'],
+    ['Амортизация',fmt(c.amort)+' ₾'],
+    ['Обслуживание',fmt(c.service)+' ₾'],
+    ['Труд',fmt(c.labor)+' ₾'],
+  ];
+  if(c.postMaterials>0)rows.push(['Материалы постобр.',fmt(c.postMaterials)+' ₾']);
+  if(c.packaging>0)rows.push(['Упаковка',fmt(c.packaging)+' ₾']);
+  rows.push(['Базовая себестоимость','<span style="font-weight:600">'+fmt(c.base)+' ₾</span>']);
+  rows.push(['Брак ('+c.defectPct+'%)','+'+fmt(c.defectAdd)+' ₾']);
+  rows.push(['section','Цена']);
+  rows.push(['Себестоимость с браком','<span class="calc-total">'+fmt(c.cost)+' ₾</span>']);
+  rows.push(['Цена до комиссии',fmt(c.priceBeforeComm)+' ₾']);
+  rows.push(['Финальная цена (комиссия '+c.commissionPct+'%)','<span class="calc-price">'+fmt(c.finalPrice)+' ₾</span>']);
+  rows.push(['Чистая прибыль','<span class="calc-profit">'+fmt(c.profit)+' ₾</span>']);
+  return rows.map(function(r){
+    if(r[0]==='section')return'<div class="calc-section">'+r[1]+'</div>';
+    return'<div class="calc-row"><span class="calc-label">'+r[0]+'</span><span>'+r[1]+'</span></div>';
   }).join('');
 }
 
-function deletePrint(id) {
-  state.prints = state.prints.filter(function(p){ return p.id !== id; });
-  renderPrints(); renderDashboard();
-  sbDelete('prints', id).then(function(){ setSyncStatus('ok', 'Удалено'); toast('Удалено'); })
-    .catch(function(){ setSyncStatus('err', 'Ошибка'); });
+function liveCalc(){
+  var box=document.getElementById('live-calc-box');
+  if(!box)return;
+  var grams=parseFloat(document.getElementById('q-grams').value);
+  var hours=parseFloat(document.getElementById('q-hours').value);
+  if(!grams||!hours){box.innerHTML='<div style="font-size:12px;color:var(--text3);text-align:center;padding:0.5rem">Введи вес и время печати для расчёта</div>';return;}
+  var params={grams:grams,print_hours:hours,prep_hours:parseFloat(document.getElementById('q-prep').value)||0.2,post_hours:parseFloat(document.getElementById('q-posttime').value)||0.1,post_materials:parseFloat(document.getElementById('q-postmat').value)||0,packaging:parseFloat(document.getElementById('q-pack').value)||0};
+  var clientType=document.getElementById('q-client').value;
+  var c=calcCost(params,state.settings,clientType);
+  box.innerHTML=calcBoxHTML(c);
 }
 
-// ── Init ─────────────────────────────────────────────────────────────
-loadAll();
+// ── Load all ──────────────────────────────────────────────────────────
+function loadAll(){
+  sync('syncing');
+  Promise.all([sGet('posts'),sGet('prints'),sGet('print_queue'),sGet('settings','?id=eq.1')]).then(function(r){
+    state.posts=Array.isArray(r[0])?r[0]:[];
+    state.prints=Array.isArray(r[1])?r[1]:[];
+    state.queue=Array.isArray(r[2])?r[2]:[];
+    state.settings=(Array.isArray(r[3])&&r[3][0])||{filament_price:40.98,electricity_price:0.25,printer_cost:3400,printer_hours:3000,service_reserve:600,power_consumption:0.2,labor_rate:20,markup_pct:60,commission_pct:18,defect_pct:5,partner_labor_rate:15,partner_markup_pct:30,partner_commission_pct:10};
+    sync('ok');
+    renderDashboard();renderPlan();renderPrints();renderQueue();
+  }).catch(function(){sync('error');toast('Ошибка загрузки данных');});
+}
+
+// ── Dashboard ─────────────────────────────────────────────────────────
+function renderDashboard(){
+  var pub=state.posts.filter(function(p){return p.status==='published';}).length;
+  var q=state.queue.filter(function(p){return p.status!=='done';}).length;
+  var g=state.prints.reduce(function(a,p){return a+(parseInt(p.grams)||0);},0);
+  document.getElementById('m-published').textContent=pub;
+  document.getElementById('m-queue').textContent=q;
+  document.getElementById('m-prints').textContent=state.prints.length;
+  document.getElementById('m-grams').textContent=g+'г';
+  var recent=state.posts.slice(-5).reverse();
+  document.getElementById('dash-posts').innerHTML=recent.length?recent.map(function(p){return'<div class="content-row"><span class="badge badge-'+p.type+'">'+TL[p.type]+'</span><span class="content-title">'+p.title+'</span><span class="badge badge-'+p.status+'">'+SL[p.status]+'</span></div>';}).join(''):'<div class="empty">Постов пока нет</div>';
+  var types=['timelapse','before-after','carousel','static','stories'];var total=state.posts.length||1;
+  document.getElementById('dash-formats').innerHTML=types.map(function(t){var c=state.posts.filter(function(p){return p.type===t;}).length;return'<div class="progress-row"><div class="progress-header"><span>'+TL[t]+'</span><span>'+c+'</span></div><div class="progress-bar"><div class="progress-fill" style="width:'+Math.round(c/total*100)+'%"></div></div></div>';}).join('');
+  var rp=state.prints.slice(-3).reverse();
+  document.getElementById('dash-prints').innerHTML=rp.length?rp.map(function(p){return'<div class="content-row"><span class="content-title">'+p.name+'</span><span class="content-meta">'+(p.grams?p.grams+'г · ':'')+''+(p.time_spent||'')+'</span><span style="color:var(--amber);font-size:12px">'+(QS[p.quality]||'')+'</span></div>';}).join(''):'<div class="empty">Изделий пока нет</div>';
+}
+
+// ── Planner ───────────────────────────────────────────────────────────
+function addPost(){
+  var title=document.getElementById('plan-title').value.trim();
+  if(!title){toast('Введи название поста');return;}
+  var btn=document.getElementById('btn-add-post');btn.disabled=true;
+  sIns('posts',{type:document.getElementById('plan-type').value,title:title,status:document.getElementById('plan-status').value,date:document.getElementById('plan-date').value||null,lang:document.getElementById('plan-lang').value,notes:document.getElementById('plan-notes').value||null})
+  .then(function(rows){if(rows&&rows[0])state.posts.push(rows[0]);['plan-title','plan-date','plan-notes'].forEach(function(id){document.getElementById(id).value='';});renderPlan();renderDashboard();toast('Пост добавлен ✓');btn.disabled=false;})
+  .catch(function(){toast('Ошибка сохранения');btn.disabled=false;});
+}
+function renderPlan(){
+  var fs=document.getElementById('filter-status')?document.getElementById('filter-status').value:'';
+  var ft=document.getElementById('filter-type')?document.getElementById('filter-type').value:'';
+  var list=state.posts.filter(function(p){return(!fs||p.status===fs)&&(!ft||p.type===ft);}).slice().sort(function(a,b){return(a.date||'9999')>(b.date||'9999')?1:-1;});
+  var el=document.getElementById('plan-list');if(!el)return;
+  if(!list.length){el.innerHTML='<div class="empty">Нет постов</div>';return;}
+  el.innerHTML=list.map(function(p){return'<div class="content-row"><span class="badge badge-'+p.type+'">'+TL[p.type]+'</span><span class="content-title">'+p.title+'</span>'+(p.date?'<span class="content-meta">'+p.date+'</span>':'')+'<select onchange="updatePostStatus('+p.id+',this.value)" style="width:auto;padding:3px 8px;font-size:11px;margin-left:4px">'+['idea','filming','editing','published'].map(function(s){return'<option value="'+s+'"'+(p.status===s?' selected':'')+'>'+SL[s]+'</option>';}).join('')+'</select><button class="del-btn" onclick="deletePost('+p.id+')">×</button></div>';}).join('');
+}
+function updatePostStatus(id,val){sUpd('posts',id,{status:val}).then(function(){var p=state.posts.find(function(x){return x.id===id;});if(p)p.status=val;renderDashboard();toast('Обновлено');});}
+function deletePost(id){sDel('posts',id).then(function(){state.posts=state.posts.filter(function(p){return p.id!==id;});renderPlan();renderDashboard();toast('Удалено');});}
+
+// ── Generator ─────────────────────────────────────────────────────────
+function selectGenType(el){document.querySelectorAll('.gen-type-btn').forEach(function(b){b.classList.remove('selected');});el.classList.add('selected');genType=el.dataset.val;}
+function generateContent(){
+  var subj=document.getElementById('gen-subject').value.trim();
+  if(!subj){toast('Укажи тему поста');return;}
+  var lang=document.getElementById('gen-lang').value,ctx=document.getElementById('gen-context').value.trim();
+  document.getElementById('gen-result-card').style.display='block';
+  var out=document.getElementById('gen-output');out.textContent='Генерирую...';out.style.color='var(--text3)';document.getElementById('gen-btn').disabled=true;
+  var tp={timelapse:'1 хук + 2-3 строки про процесс + CTA.',
+    'before-after':'Хук + что делалось + результат + CTA. До 5 строк.',
+    carousel:'Заголовок (слайд 1) + описание слайдов 2-5 + финальный CTA.',
+    static:'3-4 строки, акцент на изделии.',
+    stories:'4 слайда: что показывать + текст/подпись для каждого.',
+    hook:'5 хуков: вопрос, факт, провокация, история, обещание.'};
+  var li=lang==='ru'?'Только на русском.':lang==='ka'?'მხოლოდ ქართულად.':'Сначала на русском, потом через "———" то же на грузинском.';
+  var prompt='Ты — контент-менеджер Craftorai (@craftorai.ge). Мастерская 3D печати в Тбилиси. Принтер: Bambu Lab P1S Combo с AMS 2 Pro. Бренд: крафтовый, живой, доступный.\n\nТема: "'+subj+'".'+(ctx?'\nКонтекст: '+ctx:'')+'\n\nФормат: '+tp[genType]+' '+li+'\n\nТолько текст поста.';
+  fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})})
+  .then(function(r){return r.json();}).then(function(d){out.textContent=(d.content&&d.content[0]&&d.content[0].text)||'Ошибка';out.style.color='';document.getElementById('gen-btn').disabled=false;})
+  .catch(function(){out.textContent='Ошибка. Попробуй снова.';out.style.color='';document.getElementById('gen-btn').disabled=false;});
+}
+function copyGen(){navigator.clipboard.writeText(document.getElementById('gen-output').textContent).then(function(){toast('Скопировано!');});}
+function saveToPlanner(){var subj=document.getElementById('gen-subject').value.trim()||'Пост';sIns('posts',{type:genType,title:subj,status:'idea',lang:'ru'}).then(function(rows){if(rows&&rows[0])state.posts.push(rows[0]);renderPlan();renderDashboard();toast('Добавлено в план');});}
+
+// ── Hashtags ──────────────────────────────────────────────────────────
+var TD={en:['#3dprinting','#3dprint','#bambulab','#pla','#3dprintedart','#3dprinted','#3dprintcommunity','#fdm','#3dmodel','#makersofinstagram','#3ddesign','#filament'],ru:['#3Dпечать','#3Dпринтер','#3Dмодель','#печатьназаказ','#3Dфигурки','#бамбулаб','#PLAпластик','#мастерская','#крафт'],ka:['#3ბეჭდვა','#3Dპრინტი','#ხელნაკეთი','#თბილისი','#tbilisi','#georgia','#handmadegeorgia'],brand:['#craftorai','#craftoraige','#craftorai_ge']};
+function renderHashtags(){Object.keys(TD).forEach(function(k){var el=document.getElementById('tags-'+k);if(el)el.innerHTML=TD[k].map(function(t){return'<span class="tag" onclick="this.classList.toggle(\'selected\')">'+t+'</span>';}).join('');});}
+function copyAllTags(){navigator.clipboard.writeText([].concat(TD.brand,TD.en,TD.ru,TD.ka).join(' ')).then(function(){toast('Хэштеги скопированы!');});}
+function generateTags(){
+  var subj=document.getElementById('tag-subject').value.trim();if(!subj){toast('Опиши пост');return;}
+  var out=document.getElementById('custom-tags-out');out.innerHTML='<div style="font-size:12px;color:var(--text3)">Подбираю...</div>';document.getElementById('tag-btn').disabled=true;
+  fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,messages:[{role:'user',content:'Подбери 24 хэштега для Instagram поста Craftorai (3D печать, Тбилиси). Тема: "'+subj+'". 6 популярных EN, 5 нишевых EN, 5 русских, 4 грузинских, 2 geo/tbilisi, 2 брендовых (#craftorai). Только хэштеги через пробел.'}]})})
+  .then(function(r){return r.json();}).then(function(d){
+    var tags=((d.content&&d.content[0]&&d.content[0].text)||'').trim().split(/\s+/).filter(function(t){return t.startsWith('#');});
+    var str=tags.join(' ');
+    out.innerHTML='<div class="tag-row">'+tags.map(function(t){return'<span class="tag">'+t+'</span>';}).join('')+'</div><button class="btn btn-sm" style="margin-top:8px" onclick="navigator.clipboard.writeText('+JSON.stringify(str)+').then(function(){toast(\'Скопировано!\')})">Скопировать</button>';
+    document.getElementById('tag-btn').disabled=false;
+  }).catch(function(){out.innerHTML='<div style="font-size:12px;color:var(--text3)">Ошибка</div>';document.getElementById('tag-btn').disabled=false;});
+}
+
+// ── Print Queue ───────────────────────────────────────────────────────
+function addToQueue(){
+  var name=document.getElementById('q-name').value.trim();
+  if(!name){toast('Введи название модели');return;}
+  var grams=parseFloat(document.getElementById('q-grams').value);
+  var hours=parseFloat(document.getElementById('q-hours').value);
+  if(!grams||!hours){toast('Укажи вес и время печати');return;}
+  var btn=document.getElementById('btn-add-queue');btn.disabled=true;
+  var data={name:name,grams:grams,print_hours:hours,prep_hours:parseFloat(document.getElementById('q-prep').value)||0.2,post_hours:parseFloat(document.getElementById('q-posttime').value)||0.1,post_materials:parseFloat(document.getElementById('q-postmat').value)||0,packaging:parseFloat(document.getElementById('q-pack').value)||0,client_type:document.getElementById('q-client').value,notes:document.getElementById('q-notes').value||null,status:'queued'};
+  if(pendingFiles['stl_url']){data.stl_url=pendingFiles['stl_url'];data.stl_name=pendingFiles['stl_name'];}
+  sIns('print_queue',data).then(function(rows){
+    if(rows&&rows[0])state.queue.push(rows[0]);
+    ['q-name','q-grams','q-hours','q-postmat','q-notes'].forEach(function(id){document.getElementById(id).value='';});
+    document.getElementById('q-prep').value='0.2';document.getElementById('q-posttime').value='0.1';document.getElementById('q-pack').value='0';
+    pendingFiles={};
+    var fz=document.getElementById('fz-stl');if(fz){fz.classList.remove('filled','uploading');var t=fz.querySelector('.file-zone-title');if(t)t.textContent='Загрузить STL на Drive';}
+    renderQueue();renderDashboard();liveCalc();toast('Добавлено в очередь ✓');btn.disabled=false;
+  }).catch(function(){toast('Ошибка');btn.disabled=false;});
+}
+
+function renderQueue(){
+  var f=document.getElementById('q-filter')?document.getElementById('q-filter').value:'';
+  var list=state.queue.filter(function(q){return!f||q.status===f;}).slice().sort(function(a,b){return a.created_at>b.created_at?-1:1;});
+  var el=document.getElementById('queue-list');if(!el)return;
+  if(!list.length){el.innerHTML='<div class="empty">Очередь пуста</div>';return;}
+  el.innerHTML=list.map(function(q){
+    var c=state.settings.filament_price?calcCost(q,state.settings,q.client_type):null;
+    return'<div class="queue-card">'
+      +'<div class="queue-header"><div><div class="queue-name">'+q.name+'</div><div class="queue-meta">'+(q.grams?q.grams+'г · ':'')+''+(q.print_hours?q.print_hours+'ч · ':'')+''+(q.client_type==='partner'?'Партнёр':'Обычный клиент')+'</div></div>'
+      +'<div style="display:flex;gap:6px;align-items:center"><span class="badge badge-'+q.status+'">'+QL[q.status]+'</span>'
+      +(q.stl_url?'<a href="'+q.stl_url+'" target="_blank" class="btn btn-sm">STL</a>':'')
+      +'<select onchange="updateQueueStatus('+q.id+',this.value)" style="width:auto;padding:3px 8px;font-size:11px">'+['queued','printing','done'].map(function(s){return'<option value="'+s+'"'+(q.status===s?' selected':'')+'>'+QL[s]+'</option>';}).join('')+'</select>'
+      +(q.status!=='done'?'<button class="btn btn-sm btn-teal" onclick="convertToJournal('+q.id+')">В журнал</button>':'')
+      +'<button class="del-btn" onclick="deleteQueue('+q.id+')">×</button></div></div>'
+      +(c?'<div class="queue-prices"><div class="price-box"><div class="price-box-label">Себестоимость</div><div class="price-box-value cost">'+fmt(c.cost)+' ₾</div></div><div class="price-box"><div class="price-box-label">Цена продажи</div><div class="price-box-value sale">'+fmt(c.finalPrice)+' ₾</div></div><div class="price-box"><div class="price-box-label">Прибыль</div><div class="price-box-value profit">'+fmt(c.profit)+' ₾</div></div></div>':'')
+      +(q.notes?'<div style="font-size:12px;color:var(--text3);margin-top:8px">'+q.notes+'</div>':'')
+      +'</div>';
+  }).join('');
+}
+
+function updateQueueStatus(id,val){
+  sUpd('print_queue',id,{status:val}).then(function(){var q=state.queue.find(function(x){return x.id===id;});if(q)q.status=val;renderDashboard();toast('Обновлено');});
+}
+function deleteQueue(id){sDel('print_queue',id).then(function(){state.queue=state.queue.filter(function(q){return q.id!==id;});renderQueue();renderDashboard();toast('Удалено');});}
+
+function convertToJournal(queueId){
+  var q=state.queue.find(function(x){return x.id===queueId;});
+  if(!q)return;
+  var c=calcCost(q,state.settings,q.client_type);
+  // Pre-fill prints form
+  showTab('prints');
+  document.getElementById('print-name').value=q.name;
+  document.getElementById('print-grams').value=q.grams||'';
+  document.getElementById('print-cost').value=fmt(c.cost);
+  document.getElementById('print-notes').value=(q.notes||'')+(q.notes?'\n':'')+'Из очереди | Цена продажи: '+fmt(c.finalPrice)+' ₾ | Прибыль: '+fmt(c.profit)+' ₾';
+  if(q.stl_url){pendingFiles['stl_url']=q.stl_url;pendingFiles['stl_name']=q.stl_name||'STL файл';}
+  sUpd('print_queue',queueId,{status:'done'}).then(function(){var item=state.queue.find(function(x){return x.id===queueId;});if(item)item.status='done';});
+  toast('Данные перенесены в форму журнала ✓');
+}
+
+// ── Prints ────────────────────────────────────────────────────────────
+function addPrint(){
+  var name=document.getElementById('print-name').value.trim();
+  if(!name){toast('Введи название');return;}
+  var btn=document.getElementById('btn-add-print');btn.disabled=true;
+  var data={name:name,date:document.getElementById('print-date').value||null,grams:parseInt(document.getElementById('print-grams').value)||null,time_spent:document.getElementById('print-time').value||null,cost:document.getElementById('print-cost').value||null,filament:document.getElementById('print-filament').value,cat:document.getElementById('print-cat').value,post_process:document.getElementById('print-post').value,quality:document.getElementById('print-quality').value,notes:document.getElementById('print-notes').value||null};
+  ['photo_initial','photo_post','photo_final','video','stl'].forEach(function(f){if(pendingFiles[f+'_url']){data[f+'_url']=pendingFiles[f+'_url'];data[f+'_name']=pendingFiles[f+'_name'];}});
+  sIns('prints',data).then(function(rows){
+    if(rows&&rows[0])state.prints.push(rows[0]);
+    ['print-name','print-date','print-grams','print-time','print-cost','print-notes'].forEach(function(id){document.getElementById(id).value='';});
+    pendingFiles={};
+    ['fz-photo-initial','fz-photo-post','fz-photo-final','fz-video'].forEach(function(id,i){
+      var z=document.getElementById(id);if(!z)return;
+      z.classList.remove('filled','uploading');
+      var titles=['Фото: после печати','Фото: постобработка','Фото: финал','Таймлапс'];
+      var tEl=z.querySelector('.file-zone-title');if(tEl)tEl.textContent=titles[i];
+    });
+    renderPrints();renderDashboard();toast('Изделие добавлено ✓');btn.disabled=false;
+  }).catch(function(){toast('Ошибка сохранения');btn.disabled=false;});
+}
+
+function renderPrints(){
+  var el=document.getElementById('print-list'),stat=document.getElementById('print-total-stat');
+  if(!state.prints.length){el.innerHTML='<div class="empty">Добавь первое изделие</div>';if(stat)stat.textContent='';return;}
+  var totalG=state.prints.reduce(function(a,p){return a+(parseInt(p.grams)||0);},0);
+  if(stat)stat.textContent=state.prints.length+' изделий · '+totalG+'г';
+  el.innerHTML=state.prints.slice().reverse().map(function(p){
+    var media=[];
+    if(p.photo_initial_url)media.push('<a href="'+p.photo_initial_url+'" target="_blank" class="btn btn-sm">📷 После печати</a>');
+    if(p.photo_post_url)media.push('<a href="'+p.photo_post_url+'" target="_blank" class="btn btn-sm">📷 Постобработка</a>');
+    if(p.photo_final_url)media.push('<a href="'+p.photo_final_url+'" target="_blank" class="btn btn-sm">📷 Финал</a>');
+    if(p.video_url)media.push('<a href="'+p.video_url+'" target="_blank" class="btn btn-sm">▶ Таймлапс</a>');
+    if(p.stl_url)media.push('<a href="'+p.stl_url+'" target="_blank" class="btn btn-sm">⬇ STL</a>');
+    return'<div class="print-row"><div class="print-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--accent)" stroke-width="1.5"><rect x="3" y="8" width="14" height="9" rx="1.5"/><path d="M7 8V6a3 3 0 0 1 6 0v2"/></svg></div>'
+    +'<div class="print-info"><div class="print-name">'+p.name+(p.date?' <span style="font-size:11px;color:var(--text3);font-weight:400">· '+p.date+'</span>':'')+'</div>'
+    +'<div class="print-sub">'+(p.grams?p.grams+'г · ':'')+''+(p.time_spent?p.time_spent+' · ':'')+p.filament+'</div>'
+    +'<div class="print-badges"><span class="badge '+(CC[p.cat]||'badge-idea')+'">'+CL[p.cat]+'</span><span class="badge badge-idea">'+PL[p.post_process]+'</span>'+(p.cost?'<span class="badge" style="background:rgba(29,185,138,0.15);color:var(--teal)">'+p.cost+' ₾</span>':'')+(p.quality?'<span style="color:var(--amber);font-size:12px">'+QS[p.quality]+'</span>':'')+'</div>'
+    +(media.length?'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">'+media.join('')+'</div>':'')
+    +(p.notes?'<div style="font-size:12px;color:var(--text3);margin-top:4px">'+p.notes+'</div>':'')
+    +'</div><button class="del-btn" onclick="deletePrint('+p.id+')">×</button></div>';
+  }).join('');
+}
+function deletePrint(id){sDel('prints',id).then(function(){state.prints=state.prints.filter(function(p){return p.id!==id;});renderPrints();renderDashboard();toast('Удалено');});}
+
+// ── Settings ──────────────────────────────────────────────────────────
+function switchProfile(type,btn){
+  document.querySelectorAll('.profile-tab').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('profile-regular').style.display=type==='regular'?'block':'none';
+  document.getElementById('profile-partner').style.display=type==='partner'?'block':'none';
+}
+
+function loadSettingsForm(){
+  var s=state.settings;
+  var fields={
+    's-filament':'filament_price','s-electricity':'electricity_price',
+    's-printer-cost':'printer_cost','s-printer-hours':'printer_hours',
+    's-service-reserve':'service_reserve','s-power':'power_consumption',
+    's-labor':'labor_rate','s-markup':'markup_pct','s-commission':'commission_pct','s-defect':'defect_pct',
+    's-partner-labor':'partner_labor_rate','s-partner-markup':'partner_markup_pct','s-partner-commission':'partner_commission_pct'
+  };
+  Object.keys(fields).forEach(function(id){
+    var el=document.getElementById(id);
+    if(el&&s[fields[id]]!==undefined)el.value=s[fields[id]];
+  });
+}
+
+function saveSettings(){
+  var btn=document.getElementById('btn-save-settings');btn.disabled=true;
+  var data={
+    filament_price:parseFloat(document.getElementById('s-filament').value)||40.98,
+    electricity_price:parseFloat(document.getElementById('s-electricity').value)||0.25,
+    printer_cost:parseFloat(document.getElementById('s-printer-cost').value)||3400,
+    printer_hours:parseFloat(document.getElementById('s-printer-hours').value)||3000,
+    service_reserve:parseFloat(document.getElementById('s-service-reserve').value)||600,
+    power_consumption:parseFloat(document.getElementById('s-power').value)||0.2,
+    labor_rate:parseFloat(document.getElementById('s-labor').value)||20,
+    markup_pct:parseFloat(document.getElementById('s-markup').value)||60,
+    commission_pct:parseFloat(document.getElementById('s-commission').value)||18,
+    defect_pct:parseFloat(document.getElementById('s-defect').value)||5,
+    partner_labor_rate:parseFloat(document.getElementById('s-partner-labor').value)||15,
+    partner_markup_pct:parseFloat(document.getElementById('s-partner-markup').value)||30,
+    partner_commission_pct:parseFloat(document.getElementById('s-partner-commission').value)||10
+  };
+  sUpd('settings',1,data).then(function(){
+    state.settings=Object.assign(state.settings,data);
+    toast('Настройки сохранены ✓');btn.disabled=false;
+  }).catch(function(){
+    // Try insert if not exists
+    sIns('settings',Object.assign({id:1},data)).then(function(){state.settings=Object.assign(state.settings,data);toast('Настройки сохранены ✓');btn.disabled=false;});
+  });
+}
+
+// ── Init ──────────────────────────────────────────────────────────────
+window.addEventListener('load',function(){
+  initGoogleAuth();
+  renderAllGDriveBars();
+  renderHashtags();
+  loadAll();
+  // Try to init Google after small delay for script load
+  setTimeout(initGoogleAuth,1500);
+});
 </script>
 </body>
 </html>
