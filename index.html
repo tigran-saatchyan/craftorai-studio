@@ -588,11 +588,17 @@ function uploadFile(inputId,zoneId,field){
 
 function gDriveBarHTML(page){
   if(!gToken){
-    return '<div class="gdrive-bar"><div class="gdrive-avatar"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 10l4 4 8-8"/></svg></div><div class="gdrive-info"><div class="gdrive-name">Google Drive не подключён</div><div class="gdrive-sub">Файлы не будут сохранены</div></div><button class="btn btn-sm btn-primary" onclick="signInGoogle()">Войти в Google</button></div>';
+    if(page==='settings'){
+      return '<div class="gdrive-bar"><div class="gdrive-avatar"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 10l4 4 8-8"/></svg></div><div class="gdrive-info"><div class="gdrive-name">Google Drive не подключён</div><div class="gdrive-sub">Войдите для загрузки фото, видео и STL файлов</div></div><button class="btn btn-sm btn-primary" onclick="signInGoogle()">Войти в Google</button></div>';
+    }
+    return '<div class="gdrive-bar"><div class="gdrive-avatar"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="var(--amber)" stroke-width="1.5"><path d="M10 6v4m0 4h.01M19 10a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"/></svg></div><div class="gdrive-info"><div class="gdrive-name" style="color:var(--amber)">Google Drive не подключён</div><div class="gdrive-sub">Зайди в <b>Настройки</b> и войди в Google для загрузки файлов</div></div><button class="btn btn-sm" onclick="showTab('settings')">Настройки →</button></div>';
   }
   var avatar=gUser&&gUser.picture?'<img src="'+gUser.picture+'" alt="">':'GD';
   var name=gUser&&gUser.name?gUser.name:'Google пользователь';
-  return '<div class="gdrive-bar"><div class="gdrive-avatar">'+avatar+'</div><div class="gdrive-info"><div class="gdrive-name">'+name+'</div><div class="gdrive-sub">Папка: '+FOLDER_NAME+(gFolderId?' · подключена':' · создаётся...')+'</div></div><button class="btn btn-sm" onclick="signOutGoogle()">Выйти</button></div>';
+  var controls = page==='settings'
+    ? '<button class="btn btn-sm" onclick="signOutGoogle()">Выйти</button>'
+    : '<span style="font-size:11px;color:var(--teal)">✓ подключён</span>';
+  return '<div class="gdrive-bar"><div class="gdrive-avatar">'+avatar+'</div><div class="gdrive-info"><div class="gdrive-name">'+name+'</div><div class="gdrive-sub">Папка: '+FOLDER_NAME+(gFolderId?' · готова':' · создаётся...')+'</div></div>'+controls+'</div>';
 }
 
 function renderAllGDriveBars(){
