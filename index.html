@@ -510,6 +510,7 @@ function signInGoogle(){
 function signOutGoogle(){
   if(gToken)google.accounts.oauth2.revoke(gToken);
   gToken=null;gUser=null;gFolderId=null;
+  localStorage.removeItem('craftorai_gdrive_connected');
   renderAllGDriveBars();
   toast('Выход из Google выполнен');
 }
@@ -518,6 +519,7 @@ function fetchGUserInfo(){
   fetch('https://www.googleapis.com/oauth2/v3/userinfo',{headers:{Authorization:'Bearer '+gToken}})
   .then(function(r){return r.json();}).then(function(u){
     gUser=u;
+    localStorage.setItem('craftorai_gdrive_connected','1');
     ensureDriveFolder().then(function(){renderAllGDriveBars();toast('Google Drive подключён ✓');});
   }).catch(function(){renderAllGDriveBars();});
 }
@@ -949,12 +951,17 @@ function saveSettings(){
 
 // ── Init ──────────────────────────────────────────────────────────────
 window.addEventListener('load',function(){
-  initGoogleAuth();
   renderAllGDriveBars();
   renderHashtags();
   loadAll();
-  // Try to init Google after small delay for script load
-  setTimeout(initGoogleAuth,1500);
+  // Init Google Auth after script loads, then auto-signin if user previously connected
+  setTimeout(function(){
+    initGoogleAuth();
+    // Auto-request token silently if user previously signed in
+    if(localStorage.getItem('craftorai_gdrive_connected')==='1' && window._gisClient){
+      try{ window._gisClient.requestAccessToken({prompt:''}); }catch(e){}
+    }
+  },1500);
 });
 </script>
 </body>
