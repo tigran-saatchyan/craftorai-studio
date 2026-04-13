@@ -162,7 +162,7 @@ input[type=file]{display:none}
   <button class="nav-item active" onclick="showTab('dashboard')"><svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zm6-4a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zm6-3a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>Дашборд</button>
   <div class="nav-section">Контент</div>
   <button class="nav-item" onclick="showTab('planner')"><svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>Планировщик</button>
-  <button class="nav-item" onclick="showTab('generate')"><svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>Генератор</button>
+  <button class="nav-item" onclick="showTab('generate')"><svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>Генератор <span style="font-size:9px;background:rgba(240,165,0,0.2);color:var(--amber);padding:1px 5px;border-radius:4px;margin-left:2px">скоро</span></button>
   <button class="nav-item" onclick="showTab('hashtags')"><svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.243 3.03a1 1 0 01.727 1.213L9.53 6h2.94l.56-2.243a1 1 0 111.94.486L14.53 6H17a1 1 0 110 2h-2.97l-1 4H15a1 1 0 110 2h-2.47l-.56 2.242a1 1 0 11-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 11-1.94-.485L5.47 14H3a1 1 0 110-2h2.97l1-4H5a1 1 0 110-2h2.47l.56-2.243a1 1 0 011.213-.727zM9.03 8l-1 4h2.938l1-4H9.031z" clip-rule="evenodd"/></svg>Хэштеги</button>
   <div class="nav-section">Производство</div>
   <button class="nav-item" onclick="showTab('queue')"><svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>План печати</button>
@@ -232,32 +232,23 @@ input[type=file]{display:none}
 <!-- GENERATOR -->
 <div id="tab-generate" class="section">
   <div class="page-title">Генератор контента</div>
-  <div class="page-sub">AI создаёт тексты для постов Craftorai</div>
-  <div class="card">
-    <div class="card-title">Параметры</div>
-    <div class="form-row"><label class="form-label">Формат</label>
-      <div class="gen-type-grid">
-        <button class="gen-type-btn selected" data-val="timelapse" onclick="selectGenType(this)">Рилс-таймлапс</button>
-        <button class="gen-type-btn" data-val="before-after" onclick="selectGenType(this)">До / после</button>
-        <button class="gen-type-btn" data-val="carousel" onclick="selectGenType(this)">Карусель</button>
-        <button class="gen-type-btn" data-val="static" onclick="selectGenType(this)">Статичный</button>
-        <button class="gen-type-btn" data-val="stories" onclick="selectGenType(this)">Сторис</button>
-        <button class="gen-type-btn" data-val="hook" onclick="selectGenType(this)">5 хуков</button>
-      </div>
+  <div class="page-sub">AI создаёт тексты, хуки и сценарии для постов Craftorai</div>
+  <div class="card" style="text-align:center;padding:3rem 2rem">
+    <div style="width:56px;height:56px;background:rgba(240,165,0,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem">
+      <svg width="24" height="24" viewBox="0 0 20 20" fill="none" stroke="var(--amber)" stroke-width="1.5"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>
     </div>
-    <div class="two-col">
-      <div class="form-row"><label class="form-label">Тема / изделие</label><input type="text" id="gen-subject" placeholder="Демогоргон, 15ч, PLA белый"></div>
-      <div class="form-row"><label class="form-label">Язык</label><select id="gen-lang"><option value="ru">Русский</option><option value="ka">Грузинский</option><option value="both">Рус + Грузинский</option></select></div>
+    <div style="font-size:16px;font-weight:600;font-family:Space Grotesk,sans-serif;margin-bottom:8px">В разработке</div>
+    <div style="font-size:13px;color:var(--text2);max-width:400px;margin:0 auto;line-height:1.7">
+      Генератор будет создавать тексты, хуки и сценарии для постов на русском и грузинском языке.<br><br>
+      Для работы нужен Anthropic API ключ — подключим когда будешь готов.
     </div>
-    <div class="form-row"><label class="form-label">Доп. контекст</label><textarea id="gen-context" placeholder="Постобработка, нестандартный цвет..." style="min-height:52px"></textarea></div>
-    <button class="btn btn-primary" onclick="generateContent()" id="gen-btn">Сгенерировать</button>
-  </div>
-  <div class="card" id="gen-result-card" style="display:none">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-      <div class="card-title" style="margin-bottom:0">Готовый текст</div>
-      <div style="display:flex;gap:6px"><button class="btn btn-sm" onclick="copyGen()">Скопировать</button><button class="btn btn-sm btn-primary" onclick="saveToPlanner()">В план</button></div>
+    <div style="margin-top:1.5rem;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--radius);padding:8px 14px;font-size:12px;color:var(--text2)">Рилс-таймлапс</div>
+      <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--radius);padding:8px 14px;font-size:12px;color:var(--text2)">До / после</div>
+      <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--radius);padding:8px 14px;font-size:12px;color:var(--text2)">Карусель</div>
+      <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--radius);padding:8px 14px;font-size:12px;color:var(--text2)">Сторис</div>
+      <div style="background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--radius);padding:8px 14px;font-size:12px;color:var(--text2)">5 хуков</div>
     </div>
-    <div class="gen-output" id="gen-output"></div>
   </div>
 </div>
 
