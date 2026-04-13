@@ -919,22 +919,23 @@ function loadSettingsForm(){
   });
 }
 
+function gv(id,def){var v=document.getElementById(id).value;return v===''?def:parseFloat(v);}
 function saveSettings(){
   var btn=document.getElementById('btn-save-settings');btn.disabled=true;
   var data={
-    filament_price:parseFloat(document.getElementById('s-filament').value)||40.98,
-    electricity_price:parseFloat(document.getElementById('s-electricity').value)||0.25,
-    printer_cost:parseFloat(document.getElementById('s-printer-cost').value)||3400,
-    printer_hours:parseFloat(document.getElementById('s-printer-hours').value)||3000,
-    service_reserve:parseFloat(document.getElementById('s-service-reserve').value)||600,
-    power_consumption:parseFloat(document.getElementById('s-power').value)||0.2,
-    labor_rate:parseFloat(document.getElementById('s-labor').value)||20,
-    markup_pct:parseFloat(document.getElementById('s-markup').value)||60,
-    commission_pct:parseFloat(document.getElementById('s-commission').value)||18,
-    defect_pct:parseFloat(document.getElementById('s-defect').value)||5,
-    partner_labor_rate:parseFloat(document.getElementById('s-partner-labor').value)||15,
-    partner_markup_pct:parseFloat(document.getElementById('s-partner-markup').value)||30,
-    partner_commission_pct:parseFloat(document.getElementById('s-partner-commission').value)||10
+    filament_price:gv('s-filament',40.98),
+    electricity_price:gv('s-electricity',0.25),
+    printer_cost:gv('s-printer-cost',3400),
+    printer_hours:gv('s-printer-hours',3000),
+    service_reserve:gv('s-service-reserve',600),
+    power_consumption:gv('s-power',0.2),
+    labor_rate:gv('s-labor',20),
+    markup_pct:gv('s-markup',60),
+    commission_pct:gv('s-commission',18),
+    defect_pct:gv('s-defect',5),
+    partner_labor_rate:gv('s-partner-labor',0),
+    partner_markup_pct:gv('s-partner-markup',0),
+    partner_commission_pct:gv('s-partner-commission',0)
   };
   sUpd('settings',1,data).then(function(){
     state.settings=Object.assign(state.settings,data);
