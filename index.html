@@ -717,14 +717,16 @@ function liveCalc(){
 // ── Load all ──────────────────────────────────────────────────────────
 function loadAll(){
   sync('syncing');
-  Promise.all([sGet('posts'),sGet('prints'),sGet('print_queue'),sGet('settings','?id=eq.1')]).then(function(r){
-    state.posts=Array.isArray(r[0])?r[0]:[];
-    state.prints=Array.isArray(r[1])?r[1]:[];
-    state.queue=Array.isArray(r[2])?r[2]:[];
-    state.settings=(Array.isArray(r[3])&&r[3][0])||{filament_price:40.98,electricity_price:0.25,printer_cost:3400,printer_hours:3000,service_reserve:600,power_consumption:0.2,labor_rate:20,markup_pct:60,commission_pct:18,defect_pct:5,partner_labor_rate:15,partner_markup_pct:30,partner_commission_pct:10};
-    sync('ok');
-    renderDashboard();renderPlan();renderPrints();renderQueue();
-  }).catch(function(){sync('error');toast('Ошибка загрузки данных');});
+  // Load each table independently so one failure doesn't block others
+  var done=0; var total=4;
+  function check(){done++;if(done===total){sync('ok');renderDashboard();renderPlan();renderPrints();renderQueue();}}
+  sGet('posts').then(function(r){state.posts=Array.isArray(r)?r:[];check();}).catch(function(){check();});
+  sGet('prints').then(function(r){state.prints=Array.isArray(r)?r:[];check();}).catch(function(){check();});
+  sGet('print_queue').then(function(r){state.queue=Array.isArray(r)?r:[];check();}).catch(function(){check();});
+  sGet('settings','?id=eq.1').then(function(r){
+    state.settings=(Array.isArray(r)&&r[0])||{filament_price:40.98,electricity_price:0.25,printer_cost:3400,printer_hours:3000,service_reserve:600,power_consumption:0.2,labor_rate:20,markup_pct:60,commission_pct:18,defect_pct:5,partner_labor_rate:0,partner_markup_pct:0,partner_commission_pct:0};
+    check();
+  }).catch(function(){check();});
 }
 
 // ── Dashboard ─────────────────────────────────────────────────────────
