@@ -682,6 +682,7 @@ function calcBoxHTML(c, showAll){
   rows.push(['Брак ('+c.defectPct+'%)','+'+fmt(c.defectAdd)+' ₾']);
   rows.push(['section','Цена']);
   rows.push(['Себестоимость с браком','<span class="calc-total">'+fmt(c.cost)+' ₾</span>']);
+  rows.push(['Наценка ('+c.markupPct+'%)','+'+fmt(c.priceBeforeComm-c.cost)+' ₾']);
   rows.push(['Цена до комиссии',fmt(c.priceBeforeComm)+' ₾']);
   rows.push(['Финальная цена (комиссия '+c.commissionPct+'%)','<span class="calc-price">'+fmt(c.finalPrice)+' ₾</span>']);
   rows.push(['Чистая прибыль','<span class="calc-profit">'+fmt(c.profit)+' ₾</span>']);
